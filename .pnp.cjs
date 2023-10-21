@@ -33,6 +33,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:6.8.0"],\
             ["@typescript-eslint/parser", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:6.8.0"],\
             ["@vitejs/plugin-react-swc", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:3.4.0"],\
+            ["classnames", "npm:2.3.2"],\
             ["eslint", "npm:8.51.0"],\
             ["eslint-plugin-react-hooks", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:4.6.0"],\
             ["eslint-plugin-react-refresh", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:0.4.3"],\
@@ -1138,6 +1139,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "linkType": "HARD"\
         }]\
       ]],\
+      ["classnames", [\
+        ["npm:2.3.2", {\
+          "packageLocation": "./.yarn/cache/classnames-npm-2.3.2-d2fdae468d-2c62199789.zip/node_modules/classnames/",\
+          "packageDependencies": [\
+            ["classnames", "npm:2.3.2"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
       ["clean-stack", [\
         ["npm:2.2.0", {\
           "packageLocation": "./.yarn/cache/clean-stack-npm-2.2.0-a8ce435a5c-2ac8cd2b2f.zip/node_modules/clean-stack/",\
@@ -1698,6 +1708,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@typescript-eslint/eslint-plugin", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:6.8.0"],\
             ["@typescript-eslint/parser", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:6.8.0"],\
             ["@vitejs/plugin-react-swc", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:3.4.0"],\
+            ["classnames", "npm:2.3.2"],\
             ["eslint", "npm:8.51.0"],\
             ["eslint-plugin-react-hooks", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:4.6.0"],\
             ["eslint-plugin-react-refresh", "virtual:577724396144cc465e389989105486c3029be02bf4a064b803a77c015f40ff112e2d133e5734cc7d10d0087738ba9b745dd98b662f765dab95bb36265dcf8f02#npm:0.4.3"],\
