@@ -4,11 +4,22 @@ import { emptyTile, pieces } from "./assets.ts";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
 import { getValidMoves, isInCheck } from "./boardUtils.ts";
-import { BoardState, invertSide, Location, Piece, Side, SidedPiece, sidedPieceFromDetails, sidedPieceToNotationMap, sidedPieceToSide } from "./types.ts";
+import {
+  BoardState,
+  ExtendedBoardState,
+  invertSide,
+  Location,
+  Piece,
+  Side,
+  SidedPiece,
+  sidedPieceFromDetails,
+  sidedPieceToNotationMap,
+  sidedPieceToSide,
+} from "./types.ts";
 
 interface Props {
   side: Side;
-  state: BoardState;
+  state: ExtendedBoardState;
   requestMove: (from: Location, to: Location) => boolean;
 }
 
@@ -79,7 +90,7 @@ export default function Board({ side, state, requestMove }: Props) {
 
 
   const tileMouseDown = (tileLoc: Location) => () => {
-    const piece = state[tileLoc[1]][tileLoc[0]];
+    const piece = state.board[tileLoc[1]][tileLoc[0]];
 
     if (activePiece) {
       if (requestMove(activePiece, tileLoc)) {
@@ -121,42 +132,39 @@ export default function Board({ side, state, requestMove }: Props) {
   };
 
 
-  return <div>
-    <div className={style.board}>
-      {makeFlatBoard(state, side)
-            .map(([ p, loc, realLoc ]) =>
-                  <div
-                        key={locationToAlgebraic(loc)}
-                        title={locationToAlgebraic(loc)}
-                        className={classNames({
-                          [style.dark]: (loc[0] + loc[1]) % 2 !== 0,
-                          [style.active]: sameLoc(activePiece, loc),
-                          [style.validMove]: validMoves.some((move) => sameLoc(loc, move)),
-                          [style.drop]: dragging && sameLoc(mouseOverTile, loc) && validMoves.some((move) => sameLoc(loc, move)),
-                          [style.drag]: sameLoc(activePiece, loc) && dragging,
-                          [style.check]: (isInCheck(state, side) && p === sidedPieceFromDetails(side, Piece.King)) ||
-                          (isInCheck(state, invertSide(side)) && p === sidedPieceFromDetails(invertSide(side), Piece.King)),
-                        })}
-                        onMouseDown={tileMouseDown(loc)}
-                        onMouseUp={tileMouseUp(loc)}
-                        onMouseEnter={() => setMouseOverTile(loc)}
-                        draggable={false}
-                  >
-                    {realLoc[0] === 7 ? <span className={style.rowName}>{8 - loc[1]}</span> : null}
-                    {realLoc[1] === 7 ? <span className={style.colName}>{"ABCDEFGH"[loc[0]]}</span> : null}
-                    <img
-                          src={p !== null ? pieces[p] : emptyTile}
-                          alt={p !== null ? sidedPieceToNotationMap[p] : "empty"}
-                          draggable={false} />
-                  </div>)}
-      {(activePiece && dragging) ? <img
-            className={style.ghost}
-            src={pieces[state[activePiece[1]][activePiece[0]]!]}
-            alt={sidedPieceToNotationMap[state[activePiece[1]][activePiece[0]]!]}
-            style={{ left: ghostPos[0], top: ghostPos[1] }}
-            draggable={false}
-      /> : null}
-    </div>
-    <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
+  return <div className={style.board}>
+    {makeFlatBoard(state.board, side)
+          .map(([ p, loc, realLoc ]) =>
+                <div
+                      key={locationToAlgebraic(loc)}
+                      title={locationToAlgebraic(loc)}
+                      className={classNames({
+                        [style.dark]: (loc[0] + loc[1]) % 2 !== 0,
+                        [style.active]: sameLoc(activePiece, loc),
+                        [style.validMove]: validMoves.some((move) => sameLoc(loc, move)),
+                        [style.drop]: dragging && sameLoc(mouseOverTile, loc) && validMoves.some((move) => sameLoc(loc, move)),
+                        [style.drag]: sameLoc(activePiece, loc) && dragging,
+                        [style.check]: (isInCheck(state, side) && p === sidedPieceFromDetails(side, Piece.King)) ||
+                        (isInCheck(state, invertSide(side)) && p === sidedPieceFromDetails(invertSide(side), Piece.King)),
+                      })}
+                      onMouseDown={tileMouseDown(loc)}
+                      onMouseUp={tileMouseUp(loc)}
+                      onMouseEnter={() => setMouseOverTile(loc)}
+                      draggable={false}
+                >
+                  {realLoc[0] === 7 ? <span className={style.rowName}>{8 - loc[1]}</span> : null}
+                  {realLoc[1] === 7 ? <span className={style.colName}>{"ABCDEFGH"[loc[0]]}</span> : null}
+                  <img
+                        src={p !== null ? pieces[p] : emptyTile}
+                        alt={p !== null ? sidedPieceToNotationMap[p] : "empty"}
+                        draggable={false} />
+                </div>)}
+    {(activePiece && dragging) ? <img
+          className={style.ghost}
+          src={pieces[state.board[activePiece[1]][activePiece[0]]!]}
+          alt={sidedPieceToNotationMap[state.board[activePiece[1]][activePiece[0]]!]}
+          style={{ left: ghostPos[0], top: ghostPos[1] }}
+          draggable={false}
+    /> : null}
   </div>;
 }

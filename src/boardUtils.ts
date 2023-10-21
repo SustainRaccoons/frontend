@@ -1,6 +1,7 @@
-import { BoardState, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
+import { ExtendedBoardState, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
 
-export function getValidMoves(board: BoardState, location: Location): Location[] {
+export function getValidMoves(state: ExtendedBoardState, location: Location): Location[] {
+  const board = state.board;
   
   let allowedMoves: Location[] = [];
   let chosenSidedPiece: SidedPiece | null = board[location[1]][location[0]];
@@ -472,7 +473,8 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
 }
 
-export function isValidMove(board: BoardState, from: Location, to: Location): boolean {
+export function isValidMove(state: ExtendedBoardState, from: Location, to: Location): boolean {
+  const board = state.board;
 
   let currentSidedPiece: SidedPiece | null;
   currentSidedPiece = board[from[1]][from[0]];
@@ -489,7 +491,7 @@ export function isValidMove(board: BoardState, from: Location, to: Location): bo
 
   let currentSide: Side = sidedPieceToSide(currentSidedPiece);
 
-  let allowedmoves: Location[] = getValidMoves(board, from);
+  let allowedmoves: Location[] = getValidMoves(state, from);
 
   for (let index = 0; index < allowedmoves.length; index++) {
     //console.log("Allowed Moves:", allowedmoves[index]);
@@ -503,7 +505,9 @@ export function isValidMove(board: BoardState, from: Location, to: Location): bo
   return false;
 }
 
-export function isInCheck(board: BoardState, side: Side): boolean {
+export function isInCheck(state: ExtendedBoardState, side: Side): boolean {
+  const board = state.board;
+
   let kingPos: Location = [ 0, 0 ];
   const opponentPositions: Location[] = [];
 
@@ -528,7 +532,7 @@ export function isInCheck(board: BoardState, side: Side): boolean {
   }
 
   for (const position of opponentPositions) {
-    for (let move of getValidMoves(board, position)) {
+    for (let move of getValidMoves(state, position)) {
       if (move[0] === kingPos[0] && move[1] === kingPos[1]) {
         return true;
       }

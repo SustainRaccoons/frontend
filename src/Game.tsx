@@ -11,7 +11,7 @@ interface Props {
 
 export default function Game({ side, boardState, setBoardState }: Props) {
   const handleMoveRequest = (from: Location, to: Location) => {
-    if (!isValidMove(boardState.board, from, to)) {
+    if (!isValidMove(boardState, from, to)) {
       return false;
     }
 
@@ -38,7 +38,7 @@ export default function Game({ side, boardState, setBoardState }: Props) {
   };
 
   return <div>
-    <Board side={side} state={boardState.board} requestMove={handleMoveRequest} />
+    <Board side={side} state={boardState} requestMove={handleMoveRequest} />
 
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
 
