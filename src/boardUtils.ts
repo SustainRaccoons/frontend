@@ -479,17 +479,17 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
       console.log(location[0], location[1]);
 
       if (chosenSide === Side.White) {
-        if (state.castling.whiteKingSide === true) {
+        if (state.castling.whiteKingSide === true && state.board[7][6] === null && state.board[7][5] === null) {
           allowedMoves.push([6, 7]);
         } 
-        if (state.castling.whiteQueenSide === true) {
+        if (state.castling.whiteQueenSide === true && state.board[7][3] === null && state.board[7][2] === null && state.board[7][1] === null) {
           allowedMoves.push([2, 7]);
         }
       } else {
-        if (state.castling.blackKingSide === true) {
+        if (state.castling.blackKingSide === true && state.board[0][6] === null && state.board[0][5] == null) {
           allowedMoves.push([6, 0]);
-        } 
-        if (state.castling.blackQueenSide === true) {
+        }
+        if (state.castling.blackQueenSide === true && state.board[0][3] === null && state.board[0][2] === null && state.board[0][1] === null) {
           allowedMoves.push([2, 0]);
         }
       }
