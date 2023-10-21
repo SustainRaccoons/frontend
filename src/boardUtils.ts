@@ -90,6 +90,20 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
+      targetSidedPiece = board[PawnSpecificDirectionalMovement[1]][PawnSpecificDirectionalMovement[0]];
+
+      if (isRecursed === false) {
+        futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+
+        if (isInCheck(futureBoard, chosenSide)) {
+          continue;
+        }
+      }
+
+      if (targetSidedPiece !== null) {
+        targetSide = sidedPieceToSide(targetSidedPiece);
+      }
+
       if (index >= 0 && index <= 3 && chosenSide === Side.White) {
         continue;
       }
@@ -106,13 +120,30 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      //if (index == 0 || index == 2) {
-      //  if (PawnSpecificDirectionalMovement[0] == enPassantPossible[0])
-      //}
+      if ((index == 0 || index == 2 || index == 4 || index == 6) && enPassantPossible !== null) {
 
-      
+        if (enPassantPossible[0] == PawnSpecificDirectionalMovement[0] && enPassantPossible[1] == PawnSpecificDirectionalMovement[1]) {
+          allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+          continue;
+        }
 
-      allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+      }
+
+      if (targetSidedPiece === null && (index == 1 || index == 3 || index == 5 || index == 7)) {
+        allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+        continue;
+      }
+
+      if (targetSidedPiece !== null) {
+        targetSide = sidedPieceToSide(targetSidedPiece);
+
+        if (targetSide == Side.White && (index == 0 || index == 2)) {
+          allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+        } else if (targetSide == Side.Black && (index == 4 || index == 6)) {
+          allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+        }
+      }
+
 
     }
       // pawn can theoretically move to any of the 3 squares in front of it or behind it based on its colour and if there is an enemy piece to the side
