@@ -6,6 +6,7 @@ import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
 import Game from "./Game.tsx";
 import { ExtendedBoardState, Side } from "./types.ts";
 import {FrontPage} from "./FrontPage.tsx";
+import "./main.scss";
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
