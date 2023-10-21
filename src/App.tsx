@@ -49,6 +49,7 @@ export default function App() {
     if (msg === "join:success") {
       setGameActive(true);
       setJoinValue("");
+      setHostId("");
     }
 
     if (msg.startsWith("state:")) {
