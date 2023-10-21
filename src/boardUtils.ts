@@ -475,17 +475,22 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
         
       }
 
+      console.log("Castling:", state.castling.whiteQueenSide);
+      console.log(location[0], location[1]);
+
       if (chosenSide === Side.White) {
         if (state.castling.whiteKingSide === true) {
-          allowedMoves.push([7, 6]);
-        } else if (state.castling.whiteQueenSide === true) {
-          allowedMoves.push([7, 2]);
+          allowedMoves.push([6, 7]);
+        } 
+        if (state.castling.whiteQueenSide === true) {
+          allowedMoves.push([2, 7]);
         }
       } else {
         if (state.castling.blackKingSide === true) {
-          allowedMoves.push([0, 6]);
-        } else if (state.castling.blackQueenSide === true) {
-          allowedMoves.push([0, 2]);
+          allowedMoves.push([6, 0]);
+        } 
+        if (state.castling.blackQueenSide === true) {
+          allowedMoves.push([2, 0]);
         }
       }
 
