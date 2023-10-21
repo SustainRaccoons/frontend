@@ -5,6 +5,7 @@ import { getBoardStateAfterMove, isGameOver, isValidMove } from "./boardUtils.ts
 import {
   isEDInEffect,
   isSchizophreniaIfEffect,
+  maxTimePerMoveFromAnxiety,
   mentalIllnessList,
   movesSkippedByCripplingSelfDoubt,
   spacesSubtractedByDepression,
@@ -19,7 +20,11 @@ interface Props {
 
 export default function Game({ side, boardState, setBoardState }: Props) {
   const [ gameOver, setGameOver ] = useState(GameOver.No);
-  const mentalIllnesses = mentalIllnessList(boardState.board, side === Side.White)
+  const [ timerTime, setTimerTime ] = useState(0);
+
+  const mentalIllnesses = mentalIllnessList(boardState.board, side === Side.White);
+  const timerValue = maxTimePerMoveFromAnxiety(mentalIllnesses);
+
   const handleMoveRequest = (from: Location, to: Location) => {
     if (!isValidMove(boardState, from, to)) {
       return false;
@@ -43,7 +48,24 @@ export default function Game({ side, boardState, setBoardState }: Props) {
   };
 
   useEffect(() => {
+    let timer: number | undefined;
+    if (side === boardState.active && timerValue !== false) {
+      const turnEndTime = Date.now() + timerValue * 1000;
+
+      timer = setInterval(() => {
+        setTimerTime(Math.round((turnEndTime - Date.now()) / 1000));
+        if (Date.now() > turnEndTime) {
+          document.dispatchEvent(new Event("chess:skip"));
+          setTimerTime(0);
+        }
+      }, 1000);
+    }
+
     setGameOver(isGameOver(boardState));
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [ boardState ]);
 
   const pointsMarker = (points: number) => {
@@ -79,6 +101,10 @@ export default function Game({ side, boardState, setBoardState }: Props) {
       {gameOver === GameOver.Draw ? "Draw" : null}
       {gameOver === GameOver.WhiteWin ? "White Won" : null}
       {gameOver === GameOver.BlackWin ? "Black Won" : null}
+    </div> : null}
+
+    {timerValue !== false ? <div>
+      0:{timerTime.toString(10).padStart(2, "0")}
     </div> : null}
   </div>;
 }
