@@ -175,6 +175,14 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
         targetSidedPiece = board[KnightSpecificDirectionalMovement[1]][KnightSpecificDirectionalMovement[0]];
 
+        if (isRecursed === false) {
+          futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [KnightSpecificDirectionalMovement[0], KnightSpecificDirectionalMovement[1]]);
+
+          if (isInCheck(futureBoard, chosenSide)) {
+            break;
+          }
+        }
+
         if (targetSidedPiece === null) {
           allowedMoves.push([KnightSpecificDirectionalMovement[0], KnightSpecificDirectionalMovement[1]]);
         } else {
@@ -234,6 +242,14 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
           targetSidedPiece = board[RookSpecificDirectionalMovement[1]][RookSpecificDirectionalMovement[0]];
 
+          if (isRecursed === false) {
+            futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [RookSpecificDirectionalMovement[0], RookSpecificDirectionalMovement[1]]);
+  
+            if (isInCheck(futureBoard, chosenSide)) {
+              break;
+            }
+          }
+  
           if (targetSidedPiece === null) {
             allowedMoves.push([RookSpecificDirectionalMovement[0], RookSpecificDirectionalMovement[1]]);
           } else {
@@ -294,6 +310,14 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
           targetSidedPiece = board[BishopSpecificDirectionalMovement[1]][BishopSpecificDirectionalMovement[0]];
 
+          if (isRecursed === false) {
+            futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [BishopSpecificDirectionalMovement[0], BishopSpecificDirectionalMovement[1]]);
+  
+            if (isInCheck(futureBoard, chosenSide)) {
+              break;
+            }
+          }
+  
           if (targetSidedPiece === null) {
             allowedMoves.push([BishopSpecificDirectionalMovement[0], BishopSpecificDirectionalMovement[1]]);
           } else {
@@ -371,6 +395,14 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
         targetSidedPiece = board[QueenSpecificDirectionalMovement[1]][QueenSpecificDirectionalMovement[0]];
 
+        if (isRecursed === false) {
+          futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [QueenSpecificDirectionalMovement[0], QueenSpecificDirectionalMovement[1]]);
+
+          if (isInCheck(futureBoard, chosenSide)) {
+            break;
+          }
+        }
+
         if (targetSidedPiece === null) {
           allowedMoves.push([QueenSpecificDirectionalMovement[0], QueenSpecificDirectionalMovement[1]]);
         } else {
@@ -425,9 +457,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         
       }
 
-      // console.log("Castling:", state.castling.whiteQueenSide);
-      // console.log(location[0], location[1]);
-
+      // Castling
       if (chosenSide === Side.White) {
         if (state.castling.whiteKingSide === true && state.board[7][6] === null && state.board[7][5] === null) {
           allowedMoves.push([6, 7]);
