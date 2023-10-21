@@ -107,3 +107,10 @@ export function invertSide(side: Side): Side {
   }
   return Side.White;
 }
+
+export enum GameOver {
+  No,
+  WhiteWin,
+  BlackWin,
+  Draw,
+}

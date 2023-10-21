@@ -1,4 +1,4 @@
-import { ExtendedBoardState, invertSide, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
+import { ExtendedBoardState, GameOver, invertSide, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
 
 export function getValidMoves(state: ExtendedBoardState, location: Location): Location[] {
   const board = state.board;
@@ -673,4 +673,55 @@ export function getBoardStateAfterMove(state: ExtendedBoardState, from: Location
 
 
   return state;
+}
+
+export function isGameOver(state: ExtendedBoardState): GameOver {
+  let whiteHasMove = false;
+  let blackHasMove = false;
+
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      const piece = state.board[y][x];
+
+      if (piece === null) {
+        continue;
+      }
+
+      const pieceSide = sidedPieceToSide(piece);
+
+      if (pieceSide === Side.White) {
+        if (!whiteHasMove) {
+          if (getValidMoves(state, [ x, y ]).length > 0) {
+            whiteHasMove = true;
+          }
+        }
+      } else {
+        if (!blackHasMove) {
+          if (getValidMoves(state, [ x, y ]).length > 0) {
+            blackHasMove = true;
+          }
+        }
+      }
+    }
+  }
+
+  if (state.active === Side.White) {
+    if (whiteHasMove) {
+      return GameOver.No;
+    }
+
+    if (isInCheck(state, Side.White)) {
+      return GameOver.BlackWin;
+    }
+    return GameOver.Draw;
+  } else {
+    if (blackHasMove) {
+      return GameOver.No;
+    }
+
+    if (isInCheck(state, Side.Black)) {
+      return GameOver.WhiteWin;
+    }
+    return GameOver.Draw;
+  }
 }
