@@ -94,6 +94,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
 
         }
 
+        if (enPassantPossible !== null && specificTargetLocation[0] != enPassantPossible[0]) {
+          continue;
+        }
+
 
         allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
         
@@ -441,6 +445,8 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
 
       break;
 
+
+    ///////////////////////////////////////////// KING ///////////////////////////////////////////
     case Piece.King:
 
     targetLocations = [[location[0], location[1] - 1], [location[0] + 1, location[1] - 1],
@@ -467,6 +473,20 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
           
         }
         
+      }
+
+      if (chosenSide === Side.White) {
+        if (state.castling.whiteKingSide === true) {
+          allowedMoves.push([7, 6]);
+        } else if (state.castling.whiteQueenSide === true) {
+          allowedMoves.push([7, 2]);
+        }
+      } else {
+        if (state.castling.blackKingSide === true) {
+          allowedMoves.push([0, 6]);
+        } else if (state.castling.blackQueenSide === true) {
+          allowedMoves.push([0, 2]);
+        }
       }
 
       break;
