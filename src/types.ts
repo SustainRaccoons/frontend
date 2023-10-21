@@ -49,6 +49,10 @@ export interface ExtendedBoardState {
   fullMoves: number,
 }
 
+export interface ExtraExtendedBoardState extends ExtendedBoardState {
+  lastMove: string,
+}
+
 export type Location = [ number, number ];
 
 export type MenatlIllnessList = {
@@ -87,6 +91,21 @@ export const notationToSidedPieceMap: Record<string, SidedPiece> = {
   ["b"]: SidedPiece.BlackBishop,
   ["q"]: SidedPiece.BlackQueen,
   ["k"]: SidedPiece.BlackKing,
+} as const;
+
+export const sidedPieceToSymbolMap: Record<SidedPiece, string> = {
+  [SidedPiece.WhitePawn]: "",
+  [SidedPiece.WhiteRook]: "♖",
+  [SidedPiece.WhiteKnight]: "♘",
+  [SidedPiece.WhiteBishop]: "♗",
+  [SidedPiece.WhiteQueen]: "♕",
+  [SidedPiece.WhiteKing]: "♔",
+  [SidedPiece.BlackPawn]: "︎",
+  [SidedPiece.BlackRook]: "♜",
+  [SidedPiece.BlackKnight]: "♞",
+  [SidedPiece.BlackBishop]: "♝",
+  [SidedPiece.BlackQueen]: "♛",
+  [SidedPiece.BlackKing]: "♚",
 } as const;
 
 export function sidedPieceToPiece(piece: SidedPiece): Piece {

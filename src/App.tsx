@@ -17,6 +17,7 @@ export default function App() {
   const [ lastBoardUpdate, setLastBoardUpdate ] = useState(0);
   const [ruleset, setRuleset] = useState(false)
   const [ joinFail, setJoinFail ] = useState(false);
+  const [ moveHistory, setMoveHistory ] = useState<string[]>([]);
 
   const { sendMessage, lastMessage, readyState } = useWebSocket("ws://nav.lv:8081");
 
@@ -27,13 +28,20 @@ export default function App() {
     const chessSwapSide = () => setPlayingSide(side => side === Side.White ? Side.Black : Side.White);
     document.addEventListener("chess:swap", chessSwapSide);
 
-    const chessDebugSwapMove = () => setBoardState(state => ({ ...state, active: invertSide(state.active) }));
+    const chessDebugSwapMove = () => {
+      setBoardState(state => ({ ...state, active: invertSide(state.active) }));
+      document.dispatchEvent(new CustomEvent("chess:move", { detail: "-" }));
+    };
     document.addEventListener("chess:skip", chessDebugSwapMove);
+
+    const chessMove = (e: Event) => setMoveHistory(mh => [ ...mh, (e as CustomEvent).detail ]);
+    document.addEventListener("chess:move", chessMove);
 
     return () => {
       document.removeEventListener("chess:end", chessEndEvent);
       document.removeEventListener("chess:swap", chessSwapSide);
       document.removeEventListener("chess:skip", chessDebugSwapMove);
+      document.removeEventListener("chess:move", chessMove);
     };
   }, []);
 
@@ -53,6 +61,7 @@ export default function App() {
       setJoinValue("");
       setHostId("");
       setJoinFail(false);
+      setMoveHistory([]);
     }
 
     if (msg === "join:fail") {
@@ -92,10 +101,15 @@ export default function App() {
   }, [ boardState ]);
 
   if (gameActive) {
-    return <div className={style.App}><Game
+    return <div className={style.App}>
+      <Game
           side={playingSide}
           boardState={boardState}
-          setBoardState={setBoardState} /></div>;
+          setBoardState={setBoardState} />
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+        {moveHistory.map((v, i) => <div key={i}>{v}</div>)}
+      </div>
+    </div>;
   }
 
   if (readyState !== ReadyState.OPEN) {

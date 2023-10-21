@@ -1,4 +1,17 @@
-import { ExtendedBoardState, GameOver, invertSide, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
+import { locationToAlgebraic } from "./boardState.ts";
+import {
+  ExtendedBoardState,
+  ExtraExtendedBoardState,
+  GameOver,
+  invertSide,
+  Location,
+  Piece,
+  Side,
+  SidedPiece,
+  sidedPieceToPiece,
+  sidedPieceToSide,
+  sidedPieceToSymbolMap,
+} from "./types.ts";
 
 export function getValidMoves(state: ExtendedBoardState, location: Location, isRecursed: boolean = false): Location[] {
   const board = state.board;
@@ -547,63 +560,80 @@ export function isInCheck(state: ExtendedBoardState, side: Side): boolean {
   return false;
 }
 
-export function getBoardStateAfterMove(state: ExtendedBoardState, from: Location, to: Location) {
-  state = structuredClone(state);
+export function getBoardStateAfterMove(startState: ExtendedBoardState, from: Location, to: Location): ExtraExtendedBoardState {
+  const state = structuredClone(startState) as ExtraExtendedBoardState;
 
   const piece = state.board[from[1]][from[0]];
   const destination = state.board[to[1]][to[0]];
 
+  if (piece === null) {
+    state.lastMove = "-";
+    return state;
+  }
+
   state.board[from[1]][from[0]] = null;
   state.board[to[1]][to[0]] = piece;
 
+  state.lastMove = sidedPieceToSymbolMap[piece] + (destination === null ? "" : "x") + locationToAlgebraic(to);
+
+  const side = sidedPieceToSide(piece);
+
+
   // en passant
-  if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn) {
+  if (sidedPieceToPiece(piece) === Piece.Pawn) {
     const direction = from[1] - to[1];
-    const didTake = from[1] != to[1];
+    const didTake = from[0] != to[0];
 
     if (didTake && destination === null) {
       state.board[to[1] + direction][to[0]] = null;
+      state.lastMove = "x" + locationToAlgebraic(to);
+    }
+
+    if (didTake) {
+      state.lastMove = "abcdefgh"[from[0]] + state.lastMove;
     }
   }
 
   // castling
-  if (piece !== null && sidedPieceToPiece(piece) === Piece.King && Math.abs(from[0] - to[0]) > 1) {
+  if (sidedPieceToPiece(piece) === Piece.King && Math.abs(from[0] - to[0]) > 1) {
     const direction = from[0] - to[0];
     if (direction > 0) { // queen side
       const rook = state.board[to[1]][0];
       state.board[to[1]][0] = null;
       state.board[to[1]][3] = rook;
+      state.lastMove = "O-O-O";
     }
     if (direction < 0) { // king side
       const rook = state.board[to[1]][7];
       state.board[to[1]][7] = null;
       state.board[to[1]][5] = rook;
+      state.lastMove = "O-O";
     }
   }
 
 
   // promoting
-  if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn) {
-    const side = sidedPieceToSide(piece);
+  if (sidedPieceToPiece(piece) === Piece.Pawn) {
     if (side === Side.White && to[1] === 0) {
       state.board[to[1]][to[0]] = SidedPiece.WhiteQueen;
+      state.lastMove += "=" + sidedPieceToSymbolMap[SidedPiece.WhiteQueen];
     }
     if (side === Side.Black && to[1] === 7) {
       state.board[to[1]][to[0]] = SidedPiece.BlackQueen;
+      state.lastMove += "=" + sidedPieceToSymbolMap[SidedPiece.BlackQueen];
     }
   }
 
 
   // en passant availability
-  if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn && Math.abs(from[1] - to[1]) === 2) {
+  if (sidedPieceToPiece(piece) === Piece.Pawn && Math.abs(from[1] - to[1]) === 2) {
     state.enPassant = [ from[0], (from[1] + to[1]) / 2 ];
   } else {
     state.enPassant = null;
   }
 
   // castling availability
-  if (piece !== null && sidedPieceToPiece(piece) === Piece.Rook) {
-    const side = sidedPieceToSide(piece);
+  if (sidedPieceToPiece(piece) === Piece.Rook) {
     if (from[0] === 0) {
       if (side === Side.White && from[1] === 7) {
         state.castling.whiteQueenSide = false;
@@ -621,8 +651,7 @@ export function getBoardStateAfterMove(state: ExtendedBoardState, from: Location
       }
     }
   }
-  if (piece !== null && sidedPieceToPiece(piece) === Piece.King) {
-    const side = sidedPieceToSide(piece);
+  if (sidedPieceToPiece(piece) === Piece.King) {
     if (side === Side.White) {
       state.castling.whiteQueenSide = false;
       state.castling.whiteKingSide = false;
@@ -634,7 +663,13 @@ export function getBoardStateAfterMove(state: ExtendedBoardState, from: Location
   }
 
 
-  if (piece !== null && sidedPieceToSide(piece) === Side.Black) {
+  // did move check
+  if (isInCheck(state, invertSide(side))) {
+    state.lastMove += "+";
+  }
+
+
+  if (sidedPieceToSide(piece) === Side.Black) {
     state.fullMoves += 1;
   }
 

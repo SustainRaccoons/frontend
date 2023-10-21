@@ -15,10 +15,20 @@ export default function Game({ side, boardState, setBoardState }: Props) {
       return false;
     }
 
-    setBoardState(state => {
-      return getBoardStateAfterMove(state, from, to);
-    });
+    const piece = boardState.board[from[1]][from[0]];
+    if (piece === null) {
+      return false;
+    }
 
+    setBoardState(state => {
+      const boardStateAfterMove = getBoardStateAfterMove(state, from, to);
+
+      document.dispatchEvent(new CustomEvent("chess:move", {
+        detail: boardStateAfterMove.lastMove,
+      }));
+
+      return boardStateAfterMove;
+    });
     return true;
   };
 
