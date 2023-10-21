@@ -432,14 +432,31 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
     case Piece.King:
 
-      allowedMoves.push([location[0], location[1] - 1]);
-      allowedMoves.push([location[0] + 1, location[1] - 1]);
-      allowedMoves.push([location[0] + 1, location[1]]);
-      allowedMoves.push([location[0] + 1, location[1] + 1]);
-      allowedMoves.push([location[0], location[1] + 1]);
-      allowedMoves.push([location[0] - 1, location[1] + 1]);
-      allowedMoves.push([location[0] - 1, location[1]]);
-      allowedMoves.push([location[0] - 1, location[1] - 1]);
+    targetLocations = [[location[0], location[1] - 1], [location[0] + 1, location[1] - 1],
+                      [location[0] + 1, location[1]], [location[0] + 1, location[1] + 1],
+                      [location[0], location[1] + 1], [location[0] - 1, location[1] + 1],
+                      [location[0] - 1, location[1]], [location[0] - 1, location[1] - 1]];
+
+      for (let index = 0; index < targetLocations.length; index++) {
+
+        specificTargetLocation = targetLocations[index];
+
+        if (specificTargetLocation[0] >= 0 && specificTargetLocation[0] <= 7 && specificTargetLocation[1] >= 0 && specificTargetLocation[1] <= 7) {
+          targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
+
+          if (targetSidedPiece !== null) {
+            targetSide = sidedPieceToSide(targetSidedPiece);
+
+            if (chosenSide === targetSide) {
+              continue;
+            }
+          }
+
+          allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+          
+        }
+        
+      }
 
       break;
 
