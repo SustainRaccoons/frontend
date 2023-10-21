@@ -52,6 +52,7 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     if (side === boardState.active && timerValue !== false) {
       const turnEndTime = Date.now() + timerValue * 1000;
 
+      setTimerTime(Math.round((turnEndTime - Date.now()) / 1000));
       timer = setInterval(() => {
         setTimerTime(Math.round((turnEndTime - Date.now()) / 1000));
         if (Date.now() > turnEndTime) {
