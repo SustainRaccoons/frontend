@@ -1,7 +1,15 @@
-import {BoardState, Piece, Side, sidedPieceToPiece, sidedPieceToSide} from "./types.ts";
+import {
+  BoardState,
+  ExtendedBoardState,
+  MenatlIllnessList,
+  Piece,
+  Side,
+  sidedPieceToPiece,
+  sidedPieceToSide
+} from "./types.ts";
 
-export const mentalIllnessList = (board: BoardState, isWhite: boolean) => {
-  const mentalIllnessList = {
+export const mentalIllnessList = (board: BoardState, isWhite: boolean): MenatlIllnessList => {
+  const mentalIllnessList: MenatlIllnessList = {
     depression: 0,
     eatingDisorder: 0,
     anxiety: 0,
@@ -86,4 +94,8 @@ export const mentalIllnessList = (board: BoardState, isWhite: boolean) => {
   }
 
   return mentalIllnessList
+}
+
+export const isSchizophreniaIfEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MenatlIllnessList): number | false => {
+  return mentalIllnessList.schizophrenia !== 0 ? extendedBoard.fullMoves % (16 / 2**mentalIllnessList.schizophrenia) : false
 }

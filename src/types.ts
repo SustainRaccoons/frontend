@@ -51,6 +51,14 @@ export interface ExtendedBoardState {
 
 export type Location = [ number, number ];
 
+export type MenatlIllnessList = {
+  depression: number,
+  eatingDisorder: number,
+  anxiety: number,
+  schizophrenia: number,
+  cripplingSelfDoubt: number,
+}
+
 export const sidedPieceToNotationMap: Record<SidedPiece, string> = {
   [SidedPiece.WhitePawn]: "P",
   [SidedPiece.WhiteRook]: "R",
