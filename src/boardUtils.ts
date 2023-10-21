@@ -92,21 +92,21 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
     
     case Piece.Rook:
 
-      let canMoveDown: boolean = true;
-      let canMoveUp: boolean = true 
-      let canMoveLeft: boolean = true;
-      let canMoveRight: boolean = true;
+      let canMoveDownRook: boolean = true;
+      let canMoveUpRook: boolean = true 
+      let canMoveLeftRook: boolean = true;
+      let canMoveRightRook: boolean = true;
 
       for (let move = 1; move <= 8; move++) {
 
-        if (location[1] + move <= 7 && canMoveDown == true ) {
+        if (location[1] + move <= 7 && canMoveDownRook == true ) {
 
           targetSidedPiece = board[location[1] + move][location[0]];
 
           if (targetSidedPiece === null) {
             allowedMoves.push([location[0], location[1] + move]);
           } else {
-            canMoveDown = false;
+            canMoveDownRook = false;
             targetSide = sidedPieceToSide(targetSidedPiece);
             if (chosenSide !== targetSide) {
               allowedMoves.push([location[0], location[1] + move]);
@@ -115,14 +115,14 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
         
         }
 
-        if (location[1] - move >= 0 && canMoveUp == true) {
+        if (location[1] - move >= 0 && canMoveUpRook == true) {
 
           targetSidedPiece = board[location[1] - move][location[0]];
 
           if (targetSidedPiece === null) {
             allowedMoves.push([location[0], location[1] - move]);
           } else {
-            canMoveUp = false
+            canMoveUpRook = false
             targetSide = sidedPieceToSide(targetSidedPiece);
             if (chosenSide !== targetSide) {
               allowedMoves.push([location[0], location[1] - move]);
@@ -131,14 +131,14 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
         
         }
 
-        if (location[0] + move >= 0 && canMoveRight == true) {
+        if (location[0] + move <= 0 && canMoveRightRook == true) {
 
           targetSidedPiece = board[location[1]][location[0] + move];
 
           if (targetSidedPiece === null) {
             allowedMoves.push([location[0] + move, location[1]]);
           } else {
-            canMoveRight = false;
+            canMoveRightRook = false;
             targetSide = sidedPieceToSide(targetSidedPiece);
             if (chosenSide !== targetSide) {
               allowedMoves.push([location[0] + move, location[1]]);
@@ -147,14 +147,14 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
         
         }
 
-        if (location[0] - move >= 0 && canMoveLeft == true) {
+        if (location[0] - move >= 0 && canMoveLeftRook == true) {
 
           targetSidedPiece = board[location[1]][location[0] - move];
 
           if (targetSidedPiece === null) {
             allowedMoves.push([location[0] - move, location[1]]);
           } else {
-            canMoveLeft = false;
+            canMoveLeftRook = false;
             targetSide = sidedPieceToSide(targetSidedPiece);
             if (chosenSide !== targetSide) {
               allowedMoves.push([location[0] - move, location[1]]);
@@ -202,6 +202,82 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
     case Piece.Bishop:
 
+    let canMoveUpRightBishop: boolean = true;
+    let canMoveDownRightBishop: boolean = true 
+    let canMoveDownLeftBishop: boolean = true;
+    let canMoveUpLeftBishop: boolean = true;
+
+    for (let move = 1; move <= 8; move++) {
+
+      
+      if (location[1] + move <= 7 && location[0] - move >= 0 && canMoveUpRightBishop == true ) {
+
+        targetSidedPiece = board[location[1] + move][location[0] - move];
+
+        if (targetSidedPiece === null) {
+          allowedMoves.push([location[0] - move, location[1] + move]);
+        } else {
+          canMoveUpRightBishop = false;
+          targetSide = sidedPieceToSide(targetSidedPiece);
+          if (chosenSide !== targetSide) {
+            allowedMoves.push([location[0] - move, location[1] + move]);
+          }
+        }
+      
+      }
+      
+      if (location[1] + move <= 7 && location[0] + move <= 7 && canMoveDownRightBishop == true) {
+
+        targetSidedPiece = board[location[1] + move][location[0] + move];
+
+        if (targetSidedPiece === null) {
+          allowedMoves.push([location[0] + move, location[1] + move]);
+        } else {
+          canMoveDownRightBishop = false
+          targetSide = sidedPieceToSide(targetSidedPiece);
+          if (chosenSide !== targetSide) {
+            allowedMoves.push([location[0] + move, location[1] + move]);
+          }
+        }
+      
+      }
+      
+      if (location[0] + move <= 7 && location[1] - move >= 0 && canMoveDownLeftBishop == true) {
+
+        targetSidedPiece = board[location[1] - move][location[0] + move];
+
+        if (targetSidedPiece === null) {
+          allowedMoves.push([location[0] + move, location[1] - move]);
+        } else {
+          canMoveDownLeftBishop = false;
+          targetSide = sidedPieceToSide(targetSidedPiece);
+          if (chosenSide !== targetSide) {
+            allowedMoves.push([location[0] + move, location[1] - move]);
+          }
+        }
+      
+      }
+
+      if (location[0] - move >= 0 && location[1] - move >= 0 && canMoveUpLeftBishop == true) {
+
+        targetSidedPiece = board[location[1] - move][location[0] - move];
+
+        if (targetSidedPiece === null) {
+          allowedMoves.push([location[0] - move, location[1] - move]);
+        } else {
+          canMoveUpLeftBishop = false;
+          targetSide = sidedPieceToSide(targetSidedPiece);
+          if (chosenSide !== targetSide) {
+            allowedMoves.push([location[0] - move, location[1] - move]);
+          }
+        }
+      
+      
+      }
+
+        
+    }
+      /*
       for (let index = 1; index <= 8; index++) {
 
         allowedMoves.push([location[0] + index, location[1] + index]);
@@ -212,7 +288,7 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
         allowedMoves.push([location[0] - index, location[1] + index]);
         
-      }
+      }*/
       
       break;
 
