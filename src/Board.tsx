@@ -12,18 +12,18 @@ interface Props {
   requestMove: (from: Location, to: Location) => boolean;
 }
 
-function makeFlatBoard(state: BoardState, side: Side): [ SidedPiece | null, Location ][] {
-  const flatBoard: [ SidedPiece | null, Location ][] = [];
+function makeFlatBoard(state: BoardState, side: Side): [ SidedPiece | null, Location, Location ][] {
+  const flatBoard: [ SidedPiece | null, Location, Location ][] = [];
   if (side === Side.White) {
     for (let y = 0; y < 8; y++) {
       for (let x = 0; x < 8; x++) {
-        flatBoard.push([ state[y][x], [ x, y ] ]);
+        flatBoard.push([ state[y][x], [ x, y ], [ x, y ] ]);
       }
     }
   } else {
     for (let y = 7; y >= 0; y--) {
       for (let x = 7; x >= 0; x--) {
-        flatBoard.push([ state[y][x], [ x, y ] ]);
+        flatBoard.push([ state[y][x], [ x, y ], [ 7 - x, 7 - y ] ]);
       }
     }
   }
@@ -124,7 +124,7 @@ export default function Board({ side, state, requestMove }: Props) {
   return <div>
     <div className={style.board}>
       {makeFlatBoard(state, side)
-            .map(([ p, loc ]) =>
+            .map(([ p, loc, realLoc ]) =>
                   <div
                         key={locationToAlgebraic(loc)}
                         title={locationToAlgebraic(loc)}
@@ -142,8 +142,8 @@ export default function Board({ side, state, requestMove }: Props) {
                         onMouseEnter={() => setMouseOverTile(loc)}
                         draggable={false}
                   >
-                    {loc[0] === 7 ? <span className={style.rowName}>{8 - loc[1]}</span> : null}
-                    {loc[1] === 7 ? <span className={style.colName}>{"ABCDEFGH"[loc[0]]}</span> : null}
+                    {realLoc[0] === 7 ? <span className={style.rowName}>{8 - loc[1]}</span> : null}
+                    {realLoc[1] === 7 ? <span className={style.colName}>{"ABCDEFGH"[loc[0]]}</span> : null}
                     <img
                           src={p !== null ? pieces[p] : emptyTile}
                           alt={p !== null ? sidedPieceToNotationMap[p] : "empty"}
