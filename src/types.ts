@@ -55,7 +55,7 @@ export interface ExtraExtendedBoardState extends ExtendedBoardState {
 
 export type Location = [ number, number ];
 
-export type MenatlIllnessList = {
+export type MentalIllnessList = {
   depression: number,
   eatingDisorder: number,
   anxiety: number,

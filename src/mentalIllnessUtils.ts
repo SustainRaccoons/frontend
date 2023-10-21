@@ -1,15 +1,15 @@
 import {
   BoardState,
   ExtendedBoardState,
-  MenatlIllnessList,
+  MentalIllnessList,
   Piece,
   Side,
   sidedPieceToPiece,
   sidedPieceToSide
 } from "./types.ts";
 
-export const mentalIllnessList = (board: BoardState, isWhite: boolean): MenatlIllnessList => {
-  const mentalIllnessList: MenatlIllnessList = {
+export const mentalIllnessList = (board: BoardState, isWhite: boolean): MentalIllnessList => {
+  const mentalIllnessList: MentalIllnessList = {
     depression: 0,
     eatingDisorder: 0,
     anxiety: 0,
@@ -96,6 +96,18 @@ export const mentalIllnessList = (board: BoardState, isWhite: boolean): MenatlIl
   return mentalIllnessList
 }
 
-export const isSchizophreniaIfEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MenatlIllnessList): number | false => {
-  return mentalIllnessList.schizophrenia !== 0 ? extendedBoard.fullMoves % (16 / 2**mentalIllnessList.schizophrenia) : false
+export const isSchizophreniaIfEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MentalIllnessList): number | false => {
+  return mentalIllnessList.schizophrenia > 0 ? extendedBoard.fullMoves % (16 / 2**mentalIllnessList.schizophrenia) : false
+}
+
+export const isEDInEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MentalIllnessList): number | false => {
+  return mentalIllnessList.eatingDisorder > 0 ? extendedBoard.fullMoves % (2**mentalIllnessList.eatingDisorder) : false
+}
+
+export const movesSkippedByCripplingSelfDoubt = (mentalIllnessList: MentalIllnessList): number | false => {
+  return mentalIllnessList.cripplingSelfDoubt > 0 ? 2**(mentalIllnessList.cripplingSelfDoubt - 1) : false
+}
+
+export const spacesSubtractedByDepression = (mentalIllnessList: MentalIllnessList): number | false => {
+  return mentalIllnessList.depression > 0 ? mentalIllnessList.depression : false
 }
