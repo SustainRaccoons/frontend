@@ -3,7 +3,7 @@ import { useState } from "react";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
 import { getValidMoves } from "./boardUtils.ts";
-import { BoardState, Location, Side, SidedPiece, sidedPieceToNotationMap } from "./types.ts";
+import { BoardState, Location, Side, SidedPiece, sidedPieceToNotationMap, sidedPieceToSide } from "./types.ts";
 
 interface Props {
   side: Side;
@@ -34,6 +34,16 @@ export default function Board({ side, state, requestMove }: Props) {
       setActivePiece(null);
       setValidMoves([]);
     } else {
+      const piece = state[tileLoc[1]][tileLoc[0]];
+
+      if (piece === null) {
+        return;
+      }
+
+      if (sidedPieceToSide(piece) !== side) {
+        return;
+      }
+
       setActivePiece(tileLoc);
       setValidMoves(getValidMoves(state, tileLoc));
     }

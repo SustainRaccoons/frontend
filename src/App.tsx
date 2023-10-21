@@ -9,7 +9,7 @@ import { ExtendedBoardState, Side } from "./types.ts";
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
   const [ gameActive, setGameActive ] = useState(false);
-  const [ playingSide, setPlayingSide ] = useState(Side.White);
+  const [ playingSide, setPlayingSide ] = useState(Math.random() > .5 ? Side.White : Side.Black);
   const [ hostId, setHostId ] = useState("");
   const [ boardState, setBoardState ] = useState<ExtendedBoardState>(makeDefaultExtendedBoardState());
   const [ lastBoardUpdate, setLastBoardUpdate ] = useState(0);
