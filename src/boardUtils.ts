@@ -132,7 +132,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      if ((index == 0 || index == 2 || index == 4 || index == 6) && enPassantPossible !== null) {
+      if ((index == 0 || index == 2 || index == 4 || index == 6) && enPassantPossible !== null && isSchizo !== 0) {
 
         if (enPassantPossible[0] == PawnSpecificDirectionalMovement[0] && enPassantPossible[1] == PawnSpecificDirectionalMovement[1]) {
           allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
@@ -141,7 +141,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
       }
 
-      if (targetSidedPiece === null && (index == 1 || index == 3 || index == 5 || index == 7)) {
+      if (isSchizo !== 0 && targetSidedPiece === null && (index == 1 || index == 3 || index == 5 || index == 7)) {
         allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
         continue;
       }
@@ -158,103 +158,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
 
     }
-      // pawn can theoretically move to any of the 3 squares in front of it or behind it based on its colour and if there is an enemy piece to the side
-      // moving up and down
-
-      /*
-
-      // Moving forward one cell
-      if (location[1] - 1 >= 0) {
-        targetSidedPiece = board[location[1] - 1][location[0]];
-        if (chosenSide === Side.White && targetSidedPiece === null) {
-          allowedMoves.push([location[0], location[1] - 1]);
-        }
-      }
-
-      if (location[1] + 1 <= 7) {
-        targetSidedPiece = board[location[1] + 1][location[0]];
-        if (chosenSide === Side.Black && targetSidedPiece === null) {
-          allowedMoves.push([location[0], location[1] + 1]);
-        }
-      }
-
-      
-      // Moving forward two cells
-      if (location[1] - 2 >= 0) {
-        targetSidedPiece = board[location[1] - 2][location[0]];
-        if (chosenSide === Side.White && targetSidedPiece === null && (location[1] == 6)) {
-          allowedMoves.push([location[0], location[1] - 2]);
-        }
-      }
-      
-      if (location[1] + 2 <= 7) {
-        targetSidedPiece = board[location[1] + 2][location[0]];
-        if (chosenSide === Side.Black && targetSidedPiece === null && (location[1] == 1)) {
-          allowedMoves.push([location[0], location[1] + 2]);
-        }
-      }
-      
-      
-
-      //allowedMoves.push([location[0], location[1] + 1]);
-
-      targetLocations = [[location[0] + 1, location[1] + 1], [location[0] - 1, location[1] + 1], [location[0] - 1, location[1] - 1], [location[0] + 1, location[1] - 1]];
-      
-      for (let index = 0; index < targetLocations.length; index++) {
-
-        if (chosenSide === Side.White && ( index == 0 || index == 1)) {
-          continue;
-        }
-        
-        if (chosenSide === Side.Black && ( index == 2 || index == 3)) {
-          continue;
-        }
-
-
-        specificTargetLocation = targetLocations[index];
-        let enPassantPossible: null | Location = state.enPassant;
-
-        if (specificTargetLocation[0] < 0 || specificTargetLocation[0] > 7 || specificTargetLocation[1] < 0 || specificTargetLocation[1] > 7) {
-          continue
-        }
-        targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
-        //console.log("SpecTarget:", specificTargetLocation);
-        //console.log("targSide:", targetSidedPiece);
-
-        if (targetSidedPiece === null && enPassantPossible === null) {
-          continue;
-        }
-
-        if (targetSidedPiece !== null) {
-          targetSide = sidedPieceToSide(targetSidedPiece);
-
-          if (chosenSide === targetSide) {
-            continue;
-          }
-
-          allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
-          continue;
-
-        }
-
-        if (enPassantPossible !== null && specificTargetLocation[0] !== enPassantPossible[0]) {
-          continue;
-        }
-
-        if (enPassantPossible !== null) {
-          if (chosenSide === Side.White && location[1] !== 3) {
-            continue;
-          }
-          if (chosenSide === Side.Black && location[1] !== 4) {
-            continue;
-          }
-        }
-
-
-        allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
-        
-      }*/
-
+  
       break;
 
     case Piece.Knight:
@@ -321,7 +225,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         }
 
         if (targetSidedPiece === null) {
-          allowedMoves.push([KnightSpecificDirectionalMovement[0], KnightSpecificDirectionalMovement[1]]);
+          if (isSchizo !== 0) {
+            allowedMoves.push([KnightSpecificDirectionalMovement[0], KnightSpecificDirectionalMovement[1]]);
+          }
         } else {
           targetSide = sidedPieceToSide(targetSidedPiece);
           if (chosenSide !== targetSide) {
@@ -387,7 +293,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           }
   
           if (targetSidedPiece === null) {
-            allowedMoves.push([RookSpecificDirectionalMovement[0], RookSpecificDirectionalMovement[1]]);
+            if (isSchizo !== 0) {
+              allowedMoves.push([RookSpecificDirectionalMovement[0], RookSpecificDirectionalMovement[1]]);
+            }
           } else {
             targetSide = sidedPieceToSide(targetSidedPiece);
             canMoveRook[index] = false;
@@ -454,7 +362,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           }
   
           if (targetSidedPiece === null) {
-            allowedMoves.push([BishopSpecificDirectionalMovement[0], BishopSpecificDirectionalMovement[1]]);
+            if (isSchizo !== 0) {
+              allowedMoves.push([BishopSpecificDirectionalMovement[0], BishopSpecificDirectionalMovement[1]]);
+            }
           } else {
             targetSide = sidedPieceToSide(targetSidedPiece);
             canMoveBishop[index] = false;
@@ -538,7 +448,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         }
 
         if (targetSidedPiece === null) {
-          allowedMoves.push([QueenSpecificDirectionalMovement[0], QueenSpecificDirectionalMovement[1]]);
+          if (isSchizo !== 0) {
+            allowedMoves.push([QueenSpecificDirectionalMovement[0], QueenSpecificDirectionalMovement[1]]);
+          }
         } else {
           targetSide = sidedPieceToSide(targetSidedPiece);
           canMoveQueen[index] = false;
@@ -573,6 +485,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
             if (chosenSide === targetSide) {
               continue;
             }
+
+            allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+            continue;
           }
 
           if (isRecursed === false) {
@@ -585,7 +500,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
           }
 
-          allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+          if (isSchizo !== 0) {
+            allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+          }
           
         }
         
