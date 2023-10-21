@@ -49,20 +49,23 @@ export default function Board({ side, state, requestMove }: Props) {
     }
   };
 
-  return <div className={style.board}>
-    {augmentState(state, side)
-          .flatMap(([ row, y ]) =>
-                row.map((p, x) =>
-                      <div
-                            key={locationToAlgebraic([ x, y ])}
-                            title={locationToAlgebraic([ x, y ])}
-                            className={classNames({
-                              [style.dark]: (x + y) % 2 !== 0,
-                              [style.active]: activePiece !== null && (activePiece[0] === x && activePiece[1] === y),
-                              [style.validMove]: validMoves.some(([ mx, my ]) => mx === x && my === y),
-                            })}
-                            onClick={tileSelectHandler([ x, y ])}>
-                        {p !== null ? sidedPieceToNotationMap[p] : null}
-                      </div>))}
+  return <div>
+    <div className={style.board}>
+      {augmentState(state, side)
+            .flatMap(([ row, y ]) =>
+                  row.map((p, x) =>
+                        <div
+                              key={locationToAlgebraic([ x, y ])}
+                              title={locationToAlgebraic([ x, y ])}
+                              className={classNames({
+                                [style.dark]: (x + y) % 2 !== 0,
+                                [style.active]: activePiece !== null && (activePiece[0] === x && activePiece[1] === y),
+                                [style.validMove]: validMoves.some(([ mx, my ]) => mx === x && my === y),
+                              })}
+                              onClick={tileSelectHandler([ x, y ])}>
+                          {p !== null ? sidedPieceToNotationMap[p] : null}
+                        </div>))}
+    </div>
+    <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
   </div>;
 }

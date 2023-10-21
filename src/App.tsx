@@ -20,8 +20,12 @@ export default function App() {
     const chessEndEvent = () => setGameActive(false);
     document.addEventListener("chess:end", chessEndEvent);
 
+    const chessSwapSide = () => setPlayingSide(side => side === Side.White ? Side.Black : Side.White);
+    document.addEventListener("chess:swap", chessSwapSide);
+
     return () => {
       document.removeEventListener("chess:end", chessEndEvent);
+      document.removeEventListener("chess:swap", chessSwapSide);
     };
   }, []);
 
