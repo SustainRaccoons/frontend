@@ -5,8 +5,14 @@
   image-rendering: pixelated;
 
   & > div {
+    background: #ddd;
+    line-height: 64px;
+    text-align: center;
+    font-family: sans-serif;
+    font-size: 32px;
+
     &.dark {
-      background: black;
+      background: #666;
     }
   }
 }

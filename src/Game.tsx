@@ -1,5 +1,7 @@
+import { useState } from "react";
 import Board from "./Board.tsx";
-import { GameType, Side } from "./types.ts";
+import makeDefaultBoard from "./defaultBoardState.ts";
+import { BoardState, GameType, Side } from "./types.ts";
 
 interface Props {
   type: GameType;
@@ -19,5 +21,6 @@ export default function Game({ type, side }: Props) {
 }
 
 function LocalGame({ side }: GameProps) {
-  return <Board side={side} />;
+  const [ boardState, setBoardState ] = useState<BoardState>(makeDefaultBoard());
+  return <Board side={side} state={boardState} />;
 }
