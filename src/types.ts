@@ -50,7 +50,22 @@ export const sidedPieceToNotationMap: Record<SidedPiece, string> = {
   [SidedPiece.BlackBishop]: "b",
   [SidedPiece.BlackQueen]: "q",
   [SidedPiece.BlackKing]: "k",
-};
+} as const;
+
+export const notationToSidedPieceMap: Record<string, SidedPiece> = {
+  ["P"]: SidedPiece.WhitePawn,
+  ["R"]: SidedPiece.WhiteRook,
+  ["N"]: SidedPiece.WhiteKnight,
+  ["B"]: SidedPiece.WhiteBishop,
+  ["Q"]: SidedPiece.WhiteQueen,
+  ["K"]: SidedPiece.WhiteKing,
+  ["p"]: SidedPiece.BlackPawn,
+  ["r"]: SidedPiece.BlackRook,
+  ["n"]: SidedPiece.BlackKnight,
+  ["b"]: SidedPiece.BlackBishop,
+  ["q"]: SidedPiece.BlackQueen,
+  ["k"]: SidedPiece.BlackKing,
+} as const;
 
 export function sidedPieceToPiece(piece: SidedPiece): Piece {
   return piece & 7;

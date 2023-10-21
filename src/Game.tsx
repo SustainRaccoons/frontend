@@ -1,29 +1,15 @@
-import { useState } from "react";
+import React from "react";
 import Board from "./Board.tsx";
 import { isValidMove } from "./boardUtils.ts";
-import makeDefaultBoard from "./defaultBoardState.ts";
-import { BoardState, GameType, Location, Side } from "./types.ts";
+import { BoardState, Location, Side } from "./types.ts";
 
 interface Props {
-  type: GameType;
   side: Side;
+  boardState: BoardState,
+  setBoardState: React.Dispatch<React.SetStateAction<BoardState>>,
 }
 
-interface GameProps {
-  side: Side;
-}
-
-export default function Game({ type, side }: Props) {
-  switch (type) {
-    case GameType.Local:
-      return <LocalGame side={side} />;
-  }
-  return <>gaem? {type}</>;
-}
-
-function LocalGame({ side }: GameProps) {
-  const [ boardState, setBoardState ] = useState<BoardState>(makeDefaultBoard());
-
+export default function Game({ side, boardState, setBoardState }: Props) {
   const handleMoveRequest = (from: Location, to: Location) => {
     if (!isValidMove(boardState, from, to)) {
       return;
