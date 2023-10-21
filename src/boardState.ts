@@ -1,10 +1,10 @@
 import { ExtendedBoardState, Location, notationToSidedPieceMap, Side, sidedPieceToNotationMap } from "./types.ts";
 
-function locationToAlgebraic(loc: Location): string {
+export function locationToAlgebraic(loc: Location): string {
   return `${"abcdefgh"[loc[0]]}${8 - loc[1]}`;
 }
 
-function algebraicToLocation(alg: string): Location {
+export function algebraicToLocation(alg: string): Location {
   return [
     alg[0].charCodeAt(0) - 97, // - 'a'
     8 - Number(alg[1]),
