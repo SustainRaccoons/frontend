@@ -90,6 +90,10 @@ export default function Board({ side, state, requestMove }: Props) {
 
 
   const tileMouseDown = (tileLoc: Location) => () => {
+    if (state.active !== side) {
+      return;
+    }
+
     const piece = state.board[tileLoc[1]][tileLoc[0]];
 
     if (activePiece) {
