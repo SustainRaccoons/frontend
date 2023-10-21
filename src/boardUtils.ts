@@ -92,32 +92,112 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
     
     case Piece.Rook:
 
-      let canMoveRight, canMoveLeft, canMoveUp, canMoveDown: boolean;
+      let canMoveDown: boolean = true;
+      let canMoveUp: boolean = true 
+      let canMoveLeft: boolean = true;
+      let canMoveRight: boolean = true;
 
       for (let move = 1; move <= 8; move++) {
 
-        targetSidedPiece = board[location[1] + 2][location[0]];
+        if (location[1] + move <= 7 && canMoveDown == true ) {
 
+          targetSidedPiece = board[location[1] + move][location[0]];
 
-        //allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0], location[1] + move]);
+          } else {
+            canMoveDown = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0], location[1] + move]);
+            }
+          }
+        
+        }
+
+        if (location[1] - move >= 0 && canMoveUp == true) {
+
+          targetSidedPiece = board[location[1] - move][location[0]];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0], location[1] - move]);
+          } else {
+            canMoveUp = false
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0], location[1] - move]);
+            }
+          }
+        
+        }
+
+        if (location[0] + move >= 0 && canMoveRight == true) {
+
+          targetSidedPiece = board[location[1]][location[0] + move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] + move, location[1]]);
+          } else {
+            canMoveRight = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] + move, location[1]]);
+            }
+          }
+        
+        }
+
+        if (location[0] - move >= 0 && canMoveLeft == true) {
+
+          targetSidedPiece = board[location[1]][location[0] - move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] - move, location[1]]);
+          } else {
+            canMoveLeft = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] - move, location[1]]);
+            }
+          }
+        
+        
+        }
+
+          
       }
       
       break;
 
     case Piece.Knight:
 
-      allowedMoves.push([location[0] + 1, location[1] + 2]);
-      allowedMoves.push([location[0] + 2, location[1] + 1]);
 
-      allowedMoves.push([location[0] + 1, location[1] - 2]);
-      allowedMoves.push([location[0] + 2, location[1] - 1]);     
-
-      allowedMoves.push([location[0] - 1, location[1] + 2]);
-      allowedMoves.push([location[0] - 2, location[1] + 1]);     
-
-      allowedMoves.push([location[0] - 1, location[1] - 2]);
-      allowedMoves.push([location[0] - 2, location[1] - 1]);     
+      targetLocations = [[location[0] + 1, location[1] + 2], [location[0] + 2, location[1] + 1],
+                         [location[0] + 1, location[1] - 2], [location[0] + 2, location[1] - 1],
+                         [location[0] - 1, location[1] + 2], [location[0] - 2, location[1] + 1],
+                         [location[0] - 1, location[1] - 2], [location[0] - 2, location[1] - 1]];
       
+      for (let index = 0; index < targetLocations.length; index++) {
+
+        specificTargetLocation = targetLocations[index];
+
+        if (specificTargetLocation[0] > 0 && specificTargetLocation[0] < 8 && specificTargetLocation[1] > 0 && specificTargetLocation[1] < 8) {
+          targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
+
+          if (targetSidedPiece !== null) {
+            targetSide = sidedPieceToSide(targetSidedPiece);
+
+            if (chosenSide === targetSide) {
+              continue;
+            }
+          }
+
+          allowedMoves.push([specificTargetLocation[1], specificTargetLocation[0]]);
+          
+        }
+        
+      }
+
       break;
 
     case Piece.Bishop:
