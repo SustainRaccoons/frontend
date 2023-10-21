@@ -69,7 +69,11 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
           continue;
         }
 
+
         specificTargetLocation = targetLocations[index];
+        if (specificTargetLocation[0] < 0 || specificTargetLocation[0] > 7 || specificTargetLocation[1] < 0 || specificTargetLocation[1] > 7) {
+          continue
+        }
         targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
         //console.log("SpecTarget:", specificTargetLocation);
         //console.log("targSide:", targetSidedPiece);
