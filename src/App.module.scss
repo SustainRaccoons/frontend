@@ -64,6 +64,11 @@
       margin: .2em 0;
     }
 
+    img {
+      image-rendering: pixelated;
+      width: 2rem;
+    }
+
     button {
       position: absolute;
       top: 1rem;

@@ -6,7 +6,8 @@ import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
 import { FrontPage } from "./FrontPage.tsx";
 import Game from "./Game.tsx";
 import "./main.scss";
-import { ExtendedBoardState, invertSide, Side } from "./types.ts";
+import {ExtendedBoardState, invertSide, Side, SidedPiece} from "./types.ts";
+import {pieces} from "./assets.ts";
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
@@ -174,6 +175,19 @@ export default function App() {
               <p>The knight represents anxiety about the pressure of battle, it adds a timer to every move, if this timer runs out, you skip the turn.</p>
               <h3 id="the-bishup">The Bishop</h3>
               <p>Loosing a bishop develops the kings schizophrenia, making him hallucinate voices that force him to take an enemy piece every 8th move, if this is not possible, the move is skipped</p>
+              <h2>Each piece is represented by the following symbols</h2>
+              <h3>King</h3>
+              <img src={pieces[SidedPiece.WhiteKing]}/>
+              <h3>Queen</h3>
+              <img src={pieces[SidedPiece.WhiteQueen]}/>
+              <h3>Bishop</h3>
+              <img src={pieces[SidedPiece.WhiteBishop]}/>
+              <h3>Knight</h3>
+              <img src={pieces[SidedPiece.WhiteKnight]}/>
+              <h3>Rook</h3>
+              <img src={pieces[SidedPiece.WhiteRook]}/>
+              <h3>Pawn</h3>
+              <img src={pieces[SidedPiece.WhitePawn]}/>
           </div>
       }
     </div>
