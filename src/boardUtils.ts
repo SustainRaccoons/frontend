@@ -15,7 +15,9 @@ import {
 } from "./types.ts";
 import {
   mentalIllnessList,
-  isSchizophreniaIfEffect
+  isSchizophreniaIfEffect,
+  isEDInEffect,
+  spacesSubtractedByDepression
 } from "./mentalIllnessUtils.ts";
 
 export function getValidMoves(state: ExtendedBoardState, location: Location, isRecursed: boolean = false): Location[] {
@@ -44,6 +46,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
   let currentMentalIllnesses: MentalIllnessList = mentalIllnessList(board, isWhite);
 
   let isSchizo: number | boolean = isSchizophreniaIfEffect(state, currentMentalIllnesses);
+
+  let isEatingDisorder: number | boolean = isEDInEffect(state, currentMentalIllnesses);
+
+  let depressionPoints: number | boolean = spacesSubtractedByDepression(currentMentalIllnesses);
 
 
   switch (chosenPiece) {
@@ -249,7 +255,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
       let RookSpecificDirectionalMovement: Location;
 
       for (let index = 0; index < 4; index++) {
-        for (move = 1; move <= 8; move++) {
+        for (move = 1; move <= 8 - depressionPoints; move++) {
 
           switch (index) {
             case 0:
@@ -318,7 +324,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
       let BishopSpecificDirectionalMovement: Location;
 
       for (let index = 0; index < 4; index++) {
-        for (move = 1; move <= 8; move++) {
+        for (move = 1; move <= 8 - depressionPoints; move++) {
 
           switch (index) {
             case 0:
@@ -388,7 +394,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
     let QueenSpecificDirectionalMovement: Location;
 
     for (let index = 0; index < 8; index++) {
-      for (move = 1; move <= 8; move++) {
+      for (move = 1; move <= 8 - depressionPoints; move++) {
 
         switch (index) {
           case 0:
