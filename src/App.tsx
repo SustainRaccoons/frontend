@@ -116,7 +116,7 @@ export default function App() {
         <input
             placeholder="Game code"
             value={joinValue}
-            onChange={v => setJoinValue(v.target.value)} />
+            onChange={v => setJoinValue(v.target.value.toLowerCase())} />
         <button
             onClick={() => {
               sendMessage(`join:${joinValue}`);
