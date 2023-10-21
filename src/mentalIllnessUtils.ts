@@ -111,3 +111,7 @@ export const movesSkippedByCripplingSelfDoubt = (mentalIllnessList: MentalIllnes
 export const spacesSubtractedByDepression = (mentalIllnessList: MentalIllnessList): number | false => {
   return mentalIllnessList.depression > 0 ? mentalIllnessList.depression : false
 }
+
+export const maxTimePerMoveFromAnxiety = (mentalIllnessList: MentalIllnessList): number | false => {
+  return mentalIllnessList.anxiety > 0 ? 60 / (2**mentalIllnessList.anxiety) : false
+}
