@@ -63,8 +63,6 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     }
 
     let isOver = isGameOver(boardState);
-    console.log(mentalIllnesses, mentalIllnessList(boardState.board, side !== Side.White));
-    console.log(isSchizophreniaIfEffect(boardState, mentalIllnessList(boardState.board, side !== Side.White)));
     if (isOver === GameOver.Draw && isSchizophreniaIfEffect(boardState, mentalIllnessList(boardState.board, side !== Side.White)) === 0) {
       isOver = GameOver.No;
       document.dispatchEvent(new Event("chess:skip"));
