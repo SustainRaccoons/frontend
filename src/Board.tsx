@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { emptyTile, pieces } from "./assets.ts";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
-import { getValidMoves, isInCheck } from "./boardUtils.ts";
+import { isInCheck } from "./boardUtils.ts";
 import {
   BoardState,
   ExtendedBoardState,
@@ -114,7 +114,7 @@ export default function Board({ side, state, requestMove }: Props) {
     }
 
     setActivePiece(tileLoc);
-    setValidMoves(getValidMoves(state, tileLoc));
+    // setValidMoves(getValidMoves(state, tileLoc));
     setFullClick(false);
   };
   const tileMouseUp = (tileLoc: Location) => () => {
