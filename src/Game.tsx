@@ -21,9 +21,21 @@ export default function Game({ side, boardState, setBoardState }: Props) {
       }
 
       const piece = state.board[from[1]][from[0]];
-      state.board[from[1]][from[0]] = null;
+      const destination = state.board[to[1]][to[0]];
 
+      state.board[from[1]][from[0]] = null;
       state.board[to[1]][to[0]] = piece;
+
+      // en passant edge case
+      if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn) {
+        const direction = from[1] - to[1];
+        const didTake = from[1] != to[1];
+
+        if (didTake && destination === null) {
+          state.board[to[1] + direction][to[0]] = null;
+        }
+      }
+
 
       if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn && Math.abs(from[1] - to[1]) === 2) {
         state.enPassant = [ from[0], (from[1] + to[1]) / 2 ];
