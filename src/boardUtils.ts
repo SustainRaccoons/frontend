@@ -92,6 +92,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
             continue;
           }
 
+          allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+          continue;
+
         }
 
         if (enPassantPossible !== null && specificTargetLocation[0] !== enPassantPossible[0]) {
