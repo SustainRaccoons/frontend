@@ -51,3 +51,7 @@ export const sidedPieceToNotationMap: Record<SidedPiece, string> = {
   [SidedPiece.BlackQueen]: "q",
   [SidedPiece.BlackKing]: "k",
 };
+
+export function sidedPieceToPiece(piece: SidedPiece): Piece {
+  return piece & 7;
+}
