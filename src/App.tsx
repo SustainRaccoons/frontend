@@ -3,7 +3,12 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { decodeBoardState, encodeBoardState } from "./boardState.ts";
 import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
 import Game from "./Game.tsx";
+<<<<<<< HEAD
 import { ExtendedBoardState, Side } from "./types.ts";
+=======
+import { BoardState, Side } from "./types.ts";
+import style from "./App.module.scss"
+>>>>>>> 9d6de77 (Started work on styling)
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
@@ -37,6 +42,7 @@ export default function App() {
 
     if (msg === "join:success") {
       setGameActive(true);
+      setJoinValue("");
     }
 
     if (msg.startsWith("state:")) {
@@ -72,14 +78,14 @@ export default function App() {
   }, [ boardState ]);
 
   if (gameActive) {
-    return <Game
+    return <div className={style.App}><Game
           side={playingSide}
           boardState={boardState}
-          setBoardState={setBoardState} />;
+          setBoardState={setBoardState} /></div>;
   }
 
   if (readyState !== ReadyState.OPEN) {
-    return <>
+    return <div className={style.App}>
       <div>
         {readyState === ReadyState.CONNECTING ? "Loading webscokets..." : null}
         {readyState === ReadyState.CLOSED ? "Failed to connect to websockets" : null}
@@ -87,10 +93,10 @@ export default function App() {
       <div>
         <button onClick={() => setGameActive(true)}>Local debug</button>
       </div>
-    </>;
+    </div>;
   }
 
-  return <>
+  return <div className={style.App}>
     <div>
       <button onClick={() => setGameActive(true)}>Local debug</button>
     </div>
@@ -116,5 +122,5 @@ export default function App() {
       </button>
       {hostId ? `Join code: ${hostId}` : null}
     </div>
-  </>;
+  </div>;
 }
