@@ -12,7 +12,7 @@
   h1, h2, h3 {
     font-family: 'PT Serif', serif;
   }
-  p, a, button {
+  p, a, button, input {
     font-family: 'Open Sans', sans-serif;
   }
 
@@ -22,8 +22,9 @@
     gap: 1rem;
     justify-content: center;
     align-items: center;
+    margin: 1rem 0;
 
-    button {
+    button, input {
       font-size: 1rem;
     }
   }
@@ -32,8 +33,8 @@
     position: fixed;
     top: 1rem;
     left: 1rem;
-    max-width: calc(100vw - 2rem);
-    max-height: calc(100vh - 2rem);
+    width: calc(100vw - 2rem);
+    height: calc(100vh - 2rem);
     background: #ffffff;
     border-radius: 1rem;
     //border: 1px solid #666666;
@@ -74,7 +75,7 @@
     }
   }
 
-  button {
+  button, input {
     outline: none;
     border: 1px solid #666666;
     border-radius: .25rem;
