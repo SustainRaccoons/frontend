@@ -26,7 +26,7 @@ export function encodeBoardState(state: ExtendedBoardState): string {
   const castling = (state.castling.whiteKingSide ? "K" : "") +
         (state.castling.whiteQueenSide ? "Q" : "") +
         (state.castling.blackKingSide ? "k" : "") +
-        (state.castling.blackQueenSide ? "q" : "");
+        (state.castling.blackQueenSide ? "q" : "") || "-";
 
   const enPassant = state.enPassant === null ? "-" : locationToAlgebraic(state.enPassant);
 
