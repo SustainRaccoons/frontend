@@ -66,13 +66,18 @@ export default function App() {
   }
 
   if (readyState === ReadyState.CONNECTING) {
-    return "Connecting...";
+    return <>
+      Loading webscokets...<br />
+      <div>
+        <button onClick={() => setGameActive(true)}>Local</button>
+      </div>
+    </>;
   }
 
   return <>
-    {/*<div>*/}
-    {/*  <button onClick={() => setGameType(GameType.Local)}>Local</button>*/}
-    {/*</div>*/}
+    <div>
+      <button onClick={() => setGameActive(true)}>Local</button>
+    </div>
     <div>
       <input
             placeholder="Game code"
