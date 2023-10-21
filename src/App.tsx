@@ -16,6 +16,7 @@ export default function App() {
   const [ boardState, setBoardState ] = useState<ExtendedBoardState>(makeDefaultExtendedBoardState());
   const [ lastBoardUpdate, setLastBoardUpdate ] = useState(0);
   const [ruleset, setRuleset] = useState(false)
+  const [ joinFail, setJoinFail ] = useState(false);
 
   const { sendMessage, lastMessage, readyState } = useWebSocket("ws://nav.lv:8081");
 
@@ -51,6 +52,11 @@ export default function App() {
       setGameActive(true);
       setJoinValue("");
       setHostId("");
+      setJoinFail(false);
+    }
+
+    if (msg === "join:fail") {
+      setJoinFail(true);
     }
 
     if (msg.startsWith("state:")) {
@@ -123,6 +129,7 @@ export default function App() {
             }}>
           Join
         </button>
+        <p>{joinFail ? "Failed to join!" : null}</p>
       </div>
       <div className={style.playButtons}>
         <button
