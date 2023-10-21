@@ -11,17 +11,23 @@ interface Props {
   requestMove: (from: Location, to: Location) => any;
 }
 
-function augmentState(state: BoardState, side: Side) {
-  let augmentedState = state
-        .map((row, y) => [ row, y ] as [ (SidedPiece | null)[], number ]);
-  // augmentedState = (side === Side.White ? augmentedState : augmentedState.reverse())
-  if (side === Side.Black) {
-    augmentedState.reverse();
+function makeFlatBoard(state: BoardState, side: Side): [ SidedPiece | null, Location ][] {
+  const flatBoard: [ SidedPiece | null, Location ][] = [];
+  if (side === Side.White) {
+    for (let y = 0; y < 8; y++) {
+      for (let x = 0; x < 8; x++) {
+        flatBoard.push([ state[y][x], [ x, y ] ]);
+      }
+    }
+  } else {
+    for (let y = 7; y >= 0; y--) {
+      for (let x = 7; x >= 0; x--) {
+        flatBoard.push([ state[y][x], [ x, y ] ]);
+      }
+    }
   }
 
-  console.log(augmentedState);
-
-  return augmentedState;
+  return flatBoard;
 }
 
 export default function Board({ side, state, requestMove }: Props) {
@@ -51,20 +57,19 @@ export default function Board({ side, state, requestMove }: Props) {
 
   return <div>
     <div className={style.board}>
-      {augmentState(state, side)
-            .flatMap(([ row, y ]) =>
-                  row.map((p, x) =>
+      {makeFlatBoard(state, side)
+            .map(([ p, loc ]) =>
                         <div
-                              key={locationToAlgebraic([ x, y ])}
-                              title={locationToAlgebraic([ x, y ])}
+                              key={locationToAlgebraic(loc)}
+                              title={locationToAlgebraic(loc)}
                               className={classNames({
-                                [style.dark]: (x + y) % 2 !== 0,
-                                [style.active]: activePiece !== null && (activePiece[0] === x && activePiece[1] === y),
-                                [style.validMove]: validMoves.some(([ mx, my ]) => mx === x && my === y),
+                                [style.dark]: (loc[0] + loc[1]) % 2 !== 0,
+                                [style.active]: activePiece !== null && (activePiece[0] === loc[0] && activePiece[1] === loc[1]),
+                                [style.validMove]: validMoves.some(([ mx, my ]) => mx === loc[0] && my === loc[1]),
                               })}
-                              onClick={tileSelectHandler([ x, y ])}>
+                              onClick={tileSelectHandler(loc)}>
                           {p !== null ? sidedPieceToNotationMap[p] : null}
-                        </div>))}
+                        </div>)}
     </div>
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
   </div>;
