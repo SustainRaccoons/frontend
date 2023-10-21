@@ -1,21 +1,17 @@
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
 import { decodeBoardState, encodeBoardState } from "./boardState.ts";
-import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
+import makeDefaultBoard from "./defaultBoardState.ts";
 import Game from "./Game.tsx";
-<<<<<<< HEAD
-import { ExtendedBoardState, Side } from "./types.ts";
-=======
 import { BoardState, Side } from "./types.ts";
 import style from "./App.module.scss"
->>>>>>> 9d6de77 (Started work on styling)
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
   const [ gameActive, setGameActive ] = useState(false);
   const [ playingSide, setPlayingSide ] = useState(Side.White);
   const [ hostId, setHostId ] = useState("");
-  const [ boardState, setBoardState ] = useState<ExtendedBoardState>(makeDefaultExtendedBoardState());
+  const [ boardState, setBoardState ] = useState<BoardState>(makeDefaultBoard());
   const [ lastBoardUpdate, setLastBoardUpdate ] = useState(0);
 
   const { sendMessage, lastMessage, readyState } = useWebSocket("ws://localhost:8080");
@@ -53,19 +49,6 @@ export default function App() {
 
       setBoardState(decodeBoardState(state));
       setLastBoardUpdate(Date.now());
-    }
-
-    if (msg.startsWith("side:")) {
-      const side = msg.substring(5);
-      if (side === "white") {
-        setPlayingSide(Side.White);
-      } else if (side === "black") {
-        setPlayingSide(Side.Black);
-      }
-    }
-
-    if (msg === "close") {
-      document.dispatchEvent(new Event("chess:end"));
     }
 
     console.log(lastMessage.data);
