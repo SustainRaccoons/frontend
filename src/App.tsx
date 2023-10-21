@@ -5,6 +5,7 @@ import { decodeBoardState, encodeBoardState } from "./boardState.ts";
 import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
 import Game from "./Game.tsx";
 import { ExtendedBoardState, Side } from "./types.ts";
+import {FrontPage} from "./FrontPage.tsx";
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
@@ -86,6 +87,7 @@ export default function App() {
 
   if (readyState !== ReadyState.OPEN) {
     return <div className={style.App}>
+      <FrontPage />
       <div>
         {readyState === ReadyState.CONNECTING ? "Loading webscokets..." : null}
         {readyState === ReadyState.CLOSED ? "Failed to connect to websockets" : null}

@@ -1,6 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@700&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Open+Sans:wght@400;700&family=PT+Serif:wght@400;700&display=swap');
+
 .App {
   max-width: 1100px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
   margin: auto;
+
+  button {
+    outline: none;
+    border: 1px solid #666666;
+    border-radius: 3px;
+    background: none;
+    padding: .2em .4em;
+  }
 }
