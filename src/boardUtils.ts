@@ -181,7 +181,7 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
         specificTargetLocation = targetLocations[index];
 
-        if (specificTargetLocation[0] > 0 && specificTargetLocation[0] < 8 && specificTargetLocation[1] > 0 && specificTargetLocation[1] < 8) {
+        if (specificTargetLocation[0] >= 0 && specificTargetLocation[0] < 8 && specificTargetLocation[1] >= 0 && specificTargetLocation[1] < 8) {
           targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
 
           if (targetSidedPiece !== null) {
@@ -192,7 +192,7 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
             }
           }
 
-          allowedMoves.push([specificTargetLocation[1], specificTargetLocation[0]]);
+          allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
           
         }
         
