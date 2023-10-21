@@ -1,14 +1,15 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import style from "./App.module.scss";
 import Board from "./Board.tsx";
-import {getBoardStateAfterMove, isValidMove} from "./boardUtils.ts";
-import {ExtendedBoardState, Location, Side} from "./types.ts";
+import { getBoardStateAfterMove, isGameOver, isValidMove } from "./boardUtils.ts";
 import {
   isEDInEffect,
   isSchizophreniaIfEffect,
   mentalIllnessList,
-  movesSkippedByCripplingSelfDoubt, spacesSubtractedByDepression
+  movesSkippedByCripplingSelfDoubt,
+  spacesSubtractedByDepression,
 } from "./mentalIllnessUtils.ts";
-import style from "./App.module.scss"
+import { ExtendedBoardState, GameOver, Location, Side } from "./types.ts";
 
 interface Props {
   side: Side;
@@ -17,6 +18,7 @@ interface Props {
 }
 
 export default function Game({ side, boardState, setBoardState }: Props) {
+  const [ gameOver, setGameOver ] = useState(GameOver.No);
   const mentalIllnesses = mentalIllnessList(boardState.board, side === Side.White)
   const handleMoveRequest = (from: Location, to: Location) => {
     if (!isValidMove(boardState, from, to)) {
@@ -40,6 +42,10 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     return true;
   };
 
+  useEffect(() => {
+    setGameOver(isGameOver(boardState));
+  }, [ boardState ]);
+
   const pointsMarker = (points: number) => {
     return new Array(points).fill(0).map(() => <div></div>)
   }
@@ -55,7 +61,7 @@ export default function Game({ side, boardState, setBoardState }: Props) {
   )
 
   return <div className={style.game}>
-    <Board side={side} state={boardState} requestMove={handleMoveRequest} />
+    <Board side={side} state={boardState} requestMove={handleMoveRequest} locked={gameOver !== GameOver.No} />
 
     {mentalIllnesses.cripplingSelfDoubt > 0 && illnessPoints("Crippling self doubt", mentalIllnesses.cripplingSelfDoubt, `${movesSkippedByCripplingSelfDoubt(mentalIllnesses)} moves`)}
     {mentalIllnesses.schizophrenia > 0 && illnessPoints("Schizophrenia", mentalIllnesses.schizophrenia, `${isSchizophreniaIfEffect(boardState, mentalIllnesses)} moves`)}
@@ -67,5 +73,12 @@ export default function Game({ side, boardState, setBoardState }: Props) {
 
     <span>Current move: {boardState.active === Side.White ? "white" : "black"}</span>
     <button onClick={() => document.dispatchEvent(new Event("chess:skip"))}>Toggle move</button>
+
+    {gameOver !== GameOver.No ? <div>
+      Game is over:{" "}
+      {gameOver === GameOver.Draw ? "Draw" : null}
+      {gameOver === GameOver.WhiteWin ? "White Won" : null}
+      {gameOver === GameOver.BlackWin ? "Black Won" : null}
+    </div> : null}
   </div>;
 }

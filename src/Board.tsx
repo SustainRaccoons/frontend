@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { emptyTile, pieces } from "./assets.ts";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
-import { isInCheck } from "./boardUtils.ts";
+import { getValidMoves, isInCheck } from "./boardUtils.ts";
 import {
   BoardState,
   ExtendedBoardState,
@@ -21,6 +21,7 @@ interface Props {
   side: Side;
   state: ExtendedBoardState;
   requestMove: (from: Location, to: Location) => boolean;
+  locked: boolean;
 }
 
 function makeFlatBoard(state: BoardState, side: Side): [ SidedPiece | null, Location, Location ][] {
@@ -49,7 +50,7 @@ function sameLoc(a: Location | null, b: Location | null): boolean {
   return a[0] === b[0] && a[1] === b[1];
 }
 
-export default function Board({ side, state, requestMove }: Props) {
+export default function Board({ side, state, requestMove, locked }: Props) {
   const [ activePiece, setActivePiece ] = useState<null | Location>(null);
   const [ validMoves, setValidMoves ] = useState<Location[]>([]);
   const [ dragging, setDragging ] = useState(false);
@@ -90,7 +91,7 @@ export default function Board({ side, state, requestMove }: Props) {
 
 
   const tileMouseDown = (tileLoc: Location) => () => {
-    if (state.active !== side) {
+    if (state.active !== side || locked) {
       return;
     }
 
@@ -114,7 +115,7 @@ export default function Board({ side, state, requestMove }: Props) {
     }
 
     setActivePiece(tileLoc);
-    // setValidMoves(getValidMoves(state, tileLoc));
+    setValidMoves(getValidMoves(state, tileLoc));
     setFullClick(false);
   };
   const tileMouseUp = (tileLoc: Location) => () => {
