@@ -16,7 +16,7 @@ export default function App() {
   const [ boardState, setBoardState ] = useState<ExtendedBoardState>(makeDefaultExtendedBoardState());
   const [ lastBoardUpdate, setLastBoardUpdate ] = useState(0);
 
-  const { sendMessage, lastMessage, readyState } = useWebSocket("ws://localhost:8080");
+  const { sendMessage, lastMessage, readyState } = useWebSocket("ws://nav.lv:8081");
 
   useEffect(() => {
     const chessEndEvent = () => setGameActive(false);
