@@ -5,6 +5,7 @@ import {
   GameOver,
   invertSide,
   Location,
+  MentalIllnessList,
   Piece,
   Side,
   SidedPiece,
@@ -12,6 +13,10 @@ import {
   sidedPieceToSide,
   sidedPieceToSymbolMap,
 } from "./types.ts";
+import {
+  mentalIllnessList,
+  isSchizophreniaIfEffect
+} from "./mentalIllnessUtils.ts";
 
 export function getValidMoves(state: ExtendedBoardState, location: Location, isRecursed: boolean = false): Location[] {
   const board = state.board;
@@ -31,6 +36,14 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
   let targetSidedPiece : SidedPiece | null;
   let targetSide: Side;
   let targetLocations: Location[];
+
+  let isWhite: boolean = false;
+  if (chosenSide === Side.White) {
+    isWhite = true;
+  }
+  let currentMentalIllnesses: MentalIllnessList = mentalIllnessList(board, isWhite);
+
+  let isSchizo: number | boolean = isSchizophreniaIfEffect(state, currentMentalIllnesses);
 
 
   switch (chosenPiece) {
