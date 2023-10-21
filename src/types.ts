@@ -70,3 +70,7 @@ export const notationToSidedPieceMap: Record<string, SidedPiece> = {
 export function sidedPieceToPiece(piece: SidedPiece): Piece {
   return piece & 7;
 }
+
+export function sidedPieceToSide(piece: SidedPiece): Side {
+  return piece << 3;
+}
