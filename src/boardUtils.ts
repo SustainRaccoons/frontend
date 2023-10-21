@@ -6,17 +6,24 @@ export function fullPieceMoves(piece: Piece, location: Location): Location[] {
   switch (piece) {
     case Piece.Pawn:
       // pawn can theoretically move to any of the 3 squares in front of it or behind it based on its colour and if there is an enemy piece to the side
+      // moving up and down
       allowedMoves.push([location[0] - 1, location[1]]);
-      allowedMoves.push([location[0] - 1, location[1] + 1]);
-      allowedMoves.push([location[0] - 1, location[1] - 1]);
-
       allowedMoves.push([location[0] + 1, location[1]]);
+      
+      allowedMoves.push([location[0] - 1, location[1] + 1]);
       allowedMoves.push([location[0] + 1, location[1] + 1]);
+
+      allowedMoves.push([location[0] - 1, location[1] - 1]);
       allowedMoves.push([location[0] + 1, location[1] - 1]);
 
       break;
     
     case Piece.Rook:
+
+    for (let index = 0; index < 8; index++) {
+      allowedMoves.push([location[0] + index, location[1]]);;
+      
+    }
       
       break;
 
