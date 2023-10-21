@@ -11,16 +11,16 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
   let chosenPiece: Piece = sidedPieceToPiece(chosenSidedPiece);
   let chosenSide: Side = sidedPieceToSide(chosenSidedPiece);
+  let specificTargetLocation: Location;
+  let targetSidedPiece : SidedPiece | null;
+  let targetSide: Side;
+  let targetLocations: Location[];
+
 
   switch (chosenPiece) {
     case Piece.Pawn:
       // pawn can theoretically move to any of the 3 squares in front of it or behind it based on its colour and if there is an enemy piece to the side
       // moving up and down
-
-      let specificTargetLocation: Location;
-      let targetSidedPiece : SidedPiece | null;
-      let targetSide: Side;
-
 
       // Moving forward one cell
       if (location[1] - 1 >= 0) {
@@ -57,10 +57,18 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
       //allowedMoves.push([location[0], location[1] + 1]);
 
-      let targetLocations: Location[] = [[location[0] + 1, location[1] + 1], [location[0] - 1, location[1] + 1], [location[0] - 1, location[1] - 1], [location[0] + 1, location[1] - 1]];
+      targetLocations = [[location[0] + 1, location[1] + 1], [location[0] - 1, location[1] + 1], [location[0] - 1, location[1] - 1], [location[0] + 1, location[1] - 1]];
       
       for (let index = 0; index < targetLocations.length; index++) {
+
+        if (chosenSide === Side.White && ( index == 0 || index == 1)) {
+          continue;
+        }
         
+        if (chosenSide === Side.Black && ( index == 2 || index == 3)) {
+          continue;
+        }
+
         specificTargetLocation = targetLocations[index];
         targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
         //console.log("SpecTarget:", specificTargetLocation);
@@ -84,16 +92,14 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
     
     case Piece.Rook:
 
-      for (let index = 1; index <= 8; index++) {
+      let canMoveRight, canMoveLeft, canMoveUp, canMoveDown: boolean;
 
-        allowedMoves.push([location[0] + index, location[1]]);;
+      for (let move = 1; move <= 8; move++) {
 
-        allowedMoves.push([location[0] - index, location[1]]);;
+        targetSidedPiece = board[location[1] + 2][location[0]];
 
-        allowedMoves.push([location[0], location[1] + index]);;
 
-        allowedMoves.push([location[0], location[1] - index]);;
-        
+        //allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
       }
       
       break;
