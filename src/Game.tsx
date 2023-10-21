@@ -25,7 +25,7 @@ export default function Game({ side, boardState, setBoardState }: Props) {
 
       state.board[to[1]][to[0]] = piece;
 
-      if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn && Math.abs(from[1] - to[1]) == 2) {
+      if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn && Math.abs(from[1] - to[1]) === 2) {
         state.enPassant = [ from[0], (from[1] + to[1]) / 2 ];
       } else {
         state.enPassant = null;
@@ -37,5 +37,12 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     return true;
   };
 
-  return <Board side={side} state={boardState.board} requestMove={handleMoveRequest} />;
+  return <div>
+    <Board side={side} state={boardState.board} requestMove={handleMoveRequest} />
+
+    <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
+
+    <span>Current move: {boardState.active === Side.White ? "white" : "black"}</span>
+    <button onClick={() => document.dispatchEvent(new Event("chess:debug:swap_move"))}>Toggle move</button>
+  </div>;
 }

@@ -3,10 +3,10 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import style from "./App.module.scss";
 import { decodeBoardState, encodeBoardState } from "./boardState.ts";
 import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
+import { FrontPage } from "./FrontPage.tsx";
 import Game from "./Game.tsx";
-import { ExtendedBoardState, Side } from "./types.ts";
-import {FrontPage} from "./FrontPage.tsx";
 import "./main.scss";
+import { ExtendedBoardState, invertSide, Side } from "./types.ts";
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
@@ -25,9 +25,13 @@ export default function App() {
     const chessSwapSide = () => setPlayingSide(side => side === Side.White ? Side.Black : Side.White);
     document.addEventListener("chess:swap", chessSwapSide);
 
+    const chessDebugSwapMove = () => setBoardState(state => ({ ...state, active: invertSide(state.active) }));
+    document.addEventListener("chess:debug:swap_move", chessDebugSwapMove);
+
     return () => {
       document.removeEventListener("chess:end", chessEndEvent);
       document.removeEventListener("chess:swap", chessSwapSide);
+      document.removeEventListener("chess:debug:swap_move", chessDebugSwapMove);
     };
   }, []);
 
