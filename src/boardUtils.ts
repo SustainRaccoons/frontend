@@ -478,14 +478,10 @@ export function isValidMove(state: ExtendedBoardState, from: Location, to: Locat
 
   let currentSidedPiece: SidedPiece | null;
   currentSidedPiece = board[from[1]][from[0]];
-  //console.log(from[0], from[1]);
-  //console.log(currentSidedPiece);
 
   if (currentSidedPiece === null) {
     return false
   }
-
-  //console.log("Sided Piece Get");
 
   let currentPiece: Piece = sidedPieceToPiece(currentSidedPiece);
 
@@ -494,10 +490,7 @@ export function isValidMove(state: ExtendedBoardState, from: Location, to: Locat
   let allowedmoves: Location[] = getValidMoves(state, from);
 
   for (let index = 0; index < allowedmoves.length; index++) {
-    //console.log("Allowed Moves:", allowedmoves[index]);
-    //console.log("To:", to);
     if (to[0] === allowedmoves[index][0] && to[1] === allowedmoves[index][1]) {
-      //console.log("Check check");
       return true;
     }
   }
