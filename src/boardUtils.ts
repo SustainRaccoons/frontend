@@ -35,8 +35,90 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
   switch (chosenPiece) {
     case Piece.Pawn:
+
+    let canMovePawn: boolean[] = [true, true, true, true, true, true];
+
+    let PawnTotalDirectionalMovement: Location[] = [[0, 0], [0, 0]];
+
+    let PawnSpecificDirectionalMovement: Location;
+
+    let enPassantPossible: null | Location = state.enPassant;
+
+    for (let index = 0; index < 8; index++) {
+
+      switch (index) {
+        case 0:
+          PawnTotalDirectionalMovement[index] = [location[0] + 1, location[1] + 1];
+          break;
+        
+        case 1:
+          PawnTotalDirectionalMovement[index] = [location[0], location[1] + 1];
+          break;
+
+        case 2:
+          PawnTotalDirectionalMovement[index] = [location[0] - 1, location[1] + 1];
+          break;
+
+        case 3:
+          PawnTotalDirectionalMovement[index] = [location[0], location[1] + 2];
+          break;
+
+        case 4:
+          PawnTotalDirectionalMovement[index] = [location[0] + 1, location[1] - 1];
+          break;
+        
+        case 5:
+          PawnTotalDirectionalMovement[index] = [location[0], location[1] - 1];
+          break;
+
+        case 6:
+          PawnTotalDirectionalMovement[index] = [location[0] - 1, location[1] - 1];
+          break;
+        
+        case 7:
+          PawnTotalDirectionalMovement[index] = [location[0], location[1] - 2];
+          break;
+  
+        defeault:
+          break;
+        
+      }
+
+      PawnSpecificDirectionalMovement = PawnTotalDirectionalMovement[index];
+      
+      if (PawnSpecificDirectionalMovement[1] < 0 || PawnSpecificDirectionalMovement[1] > 7 || PawnSpecificDirectionalMovement[0] < 0 || PawnSpecificDirectionalMovement[0] > 7) {
+        continue;
+      }
+
+      if (index >= 0 && index <= 3 && chosenSide === Side.White) {
+        continue;
+      }
+
+      if (index >= 4 && index <= 7 && chosenSide === Side.Black) {
+        continue;
+      }
+
+      if (index == 3 && location[1] !== 1) {
+        continue;
+      }
+
+      if (index == 7 && location[1] !== 6) {
+        continue;
+      }
+
+      //if (index == 0 || index == 2) {
+      //  if (PawnSpecificDirectionalMovement[0] == enPassantPossible[0])
+      //}
+
+      
+
+      allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
+
+    }
       // pawn can theoretically move to any of the 3 squares in front of it or behind it based on its colour and if there is an enemy piece to the side
       // moving up and down
+
+      /*
 
       // Moving forward one cell
       if (location[1] - 1 >= 0) {
@@ -128,7 +210,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
         allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
         
-      }
+      }*/
 
       break;
 
