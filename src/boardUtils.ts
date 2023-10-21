@@ -72,6 +72,8 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
 
 
         specificTargetLocation = targetLocations[index];
+        let enPassantPossible: null | Location = state.enPassant;
+
         if (specificTargetLocation[0] < 0 || specificTargetLocation[0] > 7 || specificTargetLocation[1] < 0 || specificTargetLocation[1] > 7) {
           continue
         }
@@ -79,15 +81,19 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
         //console.log("SpecTarget:", specificTargetLocation);
         //console.log("targSide:", targetSidedPiece);
 
-        if (targetSidedPiece === null) {
+        if (targetSidedPiece === null && enPassantPossible === null) {
           continue;
         }
 
-        targetSide = sidedPieceToSide(targetSidedPiece);
+        if (targetSidedPiece !== null) {
+          targetSide = sidedPieceToSide(targetSidedPiece);
 
-        if (chosenSide === targetSide) {
-          continue;
+          if (chosenSide === targetSide) {
+            continue;
+          }
+
         }
+
 
         allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
         
