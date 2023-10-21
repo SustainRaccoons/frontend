@@ -21,17 +21,39 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
       let targetSidedPiece : SidedPiece | null;
       let targetSide: Side;
 
-      targetSidedPiece = board[location[1] - 1][location[0]];
-      if (chosenSide === Side.White && targetSidedPiece === null) {
-        allowedMoves.push([location[0], location[1] - 1]);
+
+      // Moving forward one cell
+      if (location[1] - 1 >= 0) {
+        targetSidedPiece = board[location[1] - 1][location[0]];
+        if (chosenSide === Side.White && targetSidedPiece === null) {
+          allowedMoves.push([location[0], location[1] - 1]);
+        }
       }
 
-      console.log(Side.Black)
-;      targetSidedPiece = board[location[1] + 1][location[0]];
-      if (chosenSide === Side.Black ) {//&& targetSidedPiece === null) {
-        allowedMoves.push([location[0], location[1] + 1]);
+      if (location[1] + 1 <= 7) {
+        targetSidedPiece = board[location[1] + 1][location[0]];
+        if (chosenSide === Side.Black && targetSidedPiece === null) {
+          allowedMoves.push([location[0], location[1] + 1]);
+        }
       }
 
+      
+      // Moving forward two cells
+      if (location[1] - 2 >= 0) {
+        targetSidedPiece = board[location[1] - 2][location[0]];
+        if (chosenSide === Side.White && targetSidedPiece === null && (location[1] == 6)) {
+          allowedMoves.push([location[0], location[1] - 2]);
+        }
+      }
+      
+      if (location[1] + 2 <= 7) {
+        targetSidedPiece = board[location[1] + 2][location[0]];
+        if (chosenSide === Side.Black && targetSidedPiece === null && (location[1] == 1)) {
+          allowedMoves.push([location[0], location[1] + 2]);
+        }
+      }
+      
+      
 
       //allowedMoves.push([location[0], location[1] + 1]);
 
@@ -57,17 +79,6 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
         allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
         
       }
-
-      /*
-      let targetSidedPiece: SidedPiece | null;
-      targetSidedPiece = board[location[0] + 1][location[1] + 1];
-
-      allowedMoves.push([location[0] + 1, location[1] + 1]);
-      allowedMoves.push([location[0] + 1, location[1] + 1]);
-
-      allowedMoves.push([location[0] - 1, location[1] - 1]);
-      allowedMoves.push([location[0] + 1, location[1] - 1]);
-      */
 
       break;
     
