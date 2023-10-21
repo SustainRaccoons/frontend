@@ -28,12 +28,12 @@ export default function App() {
     document.addEventListener("chess:swap", chessSwapSide);
 
     const chessDebugSwapMove = () => setBoardState(state => ({ ...state, active: invertSide(state.active) }));
-    document.addEventListener("chess:debug:swap_move", chessDebugSwapMove);
+    document.addEventListener("chess:skip", chessDebugSwapMove);
 
     return () => {
       document.removeEventListener("chess:end", chessEndEvent);
       document.removeEventListener("chess:swap", chessSwapSide);
-      document.removeEventListener("chess:debug:swap_move", chessDebugSwapMove);
+      document.removeEventListener("chess:skip", chessDebugSwapMove);
     };
   }, []);
 

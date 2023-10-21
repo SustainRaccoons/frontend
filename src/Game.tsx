@@ -28,6 +28,6 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
 
     <span>Current move: {boardState.active === Side.White ? "white" : "black"}</span>
-    <button onClick={() => document.dispatchEvent(new Event("chess:debug:swap_move"))}>Toggle move</button>
+    <button onClick={() => document.dispatchEvent(new Event("chess:skip"))}>Toggle move</button>
   </div>;
 }
