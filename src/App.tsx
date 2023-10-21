@@ -49,6 +49,19 @@ export default function App() {
       setLastBoardUpdate(Date.now());
     }
 
+    if (msg.startsWith("side:")) {
+      const side = msg.substring(5);
+      if (side === "white") {
+        setPlayingSide(Side.White);
+      } else if (side === "black") {
+        setPlayingSide(Side.Black);
+      }
+    }
+
+    if (msg === "close") {
+      document.dispatchEvent(new Event("chess:end"));
+    }
+
     console.log(lastMessage.data);
   }, [ lastMessage ]);
 
