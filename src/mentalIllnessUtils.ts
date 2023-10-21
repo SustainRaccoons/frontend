@@ -97,7 +97,7 @@ export const mentalIllnessList = (board: BoardState, isWhite: boolean): MentalIl
 }
 
 export const isSchizophreniaIfEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MentalIllnessList): number | false => {
-  return mentalIllnessList.schizophrenia > 0 ? extendedBoard.fullMoves % (16 / 2**mentalIllnessList.schizophrenia) : false
+  return mentalIllnessList.schizophrenia > 0 ? ((16 / 2**mentalIllnessList.schizophrenia) - 1) - (extendedBoard.fullMoves % (16 / 2**mentalIllnessList.schizophrenia)) : false
 }
 
 export const isEDInEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MentalIllnessList): number | false => {

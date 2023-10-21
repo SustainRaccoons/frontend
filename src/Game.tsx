@@ -84,25 +84,26 @@ export default function Game({ side, boardState, setBoardState }: Props) {
   )
 
   return <div className={style.game}>
+    {gameOver !== GameOver.No ? <h1>
+      Game is over:{" "}
+      {gameOver === GameOver.Draw ? "Draw" : null}
+      {gameOver === GameOver.WhiteWin ? "White Won" : null}
+      {gameOver === GameOver.BlackWin ? "Black Won" : null}
+    </h1> : null}
+    <h2>Current move: {boardState.active === Side.White ? "white" : "black"}</h2>
+
     <Board side={side} state={boardState} requestMove={handleMoveRequest} locked={gameOver !== GameOver.No} />
 
     {mentalIllnesses.cripplingSelfDoubt > 0 && illnessPoints("Crippling self doubt", mentalIllnesses.cripplingSelfDoubt, `${movesSkippedByCripplingSelfDoubt(mentalIllnesses)} moves`)}
     {mentalIllnesses.schizophrenia > 0 && illnessPoints("Schizophrenia", mentalIllnesses.schizophrenia, `${isSchizophreniaIfEffect(boardState, mentalIllnesses)} moves`)}
     {mentalIllnesses.eatingDisorder > 0 && illnessPoints("Eating disorder", mentalIllnesses.eatingDisorder, `${isEDInEffect(boardState, mentalIllnesses)} moves`)}
-    {mentalIllnesses.anxiety > 0 && illnessPoints("Anxiety", mentalIllnesses.anxiety, "")}
+    {mentalIllnesses.anxiety > 0 && illnessPoints("Anxiety", mentalIllnesses.anxiety, `${maxTimePerMoveFromAnxiety(mentalIllnesses)} seconds`)}
     {mentalIllnesses.depression > 0 && illnessPoints("Depression", mentalIllnesses.depression, `${spacesSubtractedByDepression(mentalIllnesses)} spaces`)}
 
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
 
     <span>Current move: {boardState.active === Side.White ? "white" : "black"}</span>
     <button onClick={() => document.dispatchEvent(new Event("chess:skip"))}>Toggle move</button>
-
-    {gameOver !== GameOver.No ? <div>
-      Game is over:{" "}
-      {gameOver === GameOver.Draw ? "Draw" : null}
-      {gameOver === GameOver.WhiteWin ? "White Won" : null}
-      {gameOver === GameOver.BlackWin ? "Black Won" : null}
-    </div> : null}
 
     {timerValue !== false ? <div>
       0:{timerTime.toString(10).padStart(2, "0")}
