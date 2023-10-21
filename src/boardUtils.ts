@@ -1,20 +1,42 @@
-import { BoardState, Location, Piece, SidedPiece, sidedPieceToPiece } from "./types.ts";
+import { BoardState, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
 
-export function fullPieceMoves(piece: Piece, location: Location): Location[] {
-
+export function getValidMoves(board: BoardState, chosenPiece: Piece, chosenSide: Side, location: Location): Location[] {
+  
   let allowedMoves: Location[] = [];
-  switch (piece) {
+
+  switch (chosenPiece) {
     case Piece.Pawn:
       // pawn can theoretically move to any of the 3 squares in front of it or behind it based on its colour and if there is an enemy piece to the side
       // moving up and down
       allowedMoves.push([location[0], location[1] + 1]);
       allowedMoves.push([location[0], location[1] - 1]);
 
+      let targetLocations: Location[] = [[location[0] + 1, location[1] + 1], [location[0] + 1, location[1] + 1], [location[0] - 1, location[1] - 1], [location[0] + 1, location[1] - 1]];
+      
+      for (let index = 0; index < targetLocations.length; index++) {
+        
+        let targetSidedPiece: SidedPiece | null;
+        let specificTargetLocation: Location = targetLocations[index];
+        targetSidedPiece = board[specificTargetLocation[0]][specificTargetLocation[1]];
+
+        if (targetSidedPiece === null) {
+          continue;
+        }
+
+        allowedMoves.push([specificTargetLocation[0], specificTargetLocation[1]]);
+        
+      }
+
+      /*
+      let targetSidedPiece: SidedPiece | null;
+      targetSidedPiece = board[location[0] + 1][location[1] + 1];
+
       allowedMoves.push([location[0] + 1, location[1] + 1]);
       allowedMoves.push([location[0] + 1, location[1] + 1]);
 
       allowedMoves.push([location[0] - 1, location[1] - 1]);
       allowedMoves.push([location[0] + 1, location[1] - 1]);
+      */
 
       break;
     
@@ -103,10 +125,7 @@ export function fullPieceMoves(piece: Piece, location: Location): Location[] {
 
   }
   return allowedMoves;
-}
 
-export function getValidMoves(board: BoardState, position: Location): Location[] {
-  return [];
 }
 
 export function isValidMove(board: BoardState, from: Location, to: Location): boolean {
@@ -124,7 +143,9 @@ export function isValidMove(board: BoardState, from: Location, to: Location): bo
 
   let currentPiece: Piece = sidedPieceToPiece(currentSidedPiece);
 
-  let allowedmoves: Location[] = fullPieceMoves(currentPiece, from)
+  let currentSide: Side = sidedPieceToSide(currentSidedPiece);
+
+  let allowedmoves: Location[] = getValidMoves(board, currentPiece, currentSide, from);
 
   for (let index = 0; index < allowedmoves.length; index++) {
     console.log("Allowed Moves:", allowedmoves[index]);
