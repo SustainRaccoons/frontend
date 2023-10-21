@@ -65,18 +65,21 @@ export default function App() {
           setBoardState={setBoardState} />;
   }
 
-  if (readyState === ReadyState.CONNECTING) {
+  if (readyState !== ReadyState.OPEN) {
     return <>
-      Loading webscokets...<br />
       <div>
-        <button onClick={() => setGameActive(true)}>Local</button>
+        {readyState === ReadyState.CONNECTING ? "Loading webscokets..." : null}
+        {readyState === ReadyState.CLOSED ? "Failed to connect to websockets" : null}
+      </div>
+      <div>
+        <button onClick={() => setGameActive(true)}>Local debug</button>
       </div>
     </>;
   }
 
   return <>
     <div>
-      <button onClick={() => setGameActive(true)}>Local</button>
+      <button onClick={() => setGameActive(true)}>Local debug</button>
     </div>
     <div>
       <input
