@@ -86,5 +86,5 @@ export function sidedPieceToPiece(piece: SidedPiece): Piece {
 }
 
 export function sidedPieceToSide(piece: SidedPiece): Side {
-  return piece << 3;
+  return piece >> 3;
 }
