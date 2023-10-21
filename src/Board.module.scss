@@ -1,0 +1,12 @@
+.board {
+  display: grid;
+  grid-template-columns: repeat(8, 64px);
+  grid-template-rows: repeat(8, 64px);
+  image-rendering: pixelated;
+
+  & > div {
+    &.dark {
+      background: black;
+    }
+  }
+}
