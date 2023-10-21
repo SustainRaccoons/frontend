@@ -40,5 +40,22 @@
       color: rgba(184, 184, 184, 0.67);
       z-index: 2;
     }
+
+    &.drag img {
+      opacity: .5;
+    }
+
+    &.drop {
+      filter: sepia(100%);
+    }
+  }
+
+  img.ghost {
+    position: absolute;
+    width: 64px;
+    height: 64px;
+    z-index: 4;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
   }
 }

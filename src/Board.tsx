@@ -1,5 +1,5 @@
 import classNames from "classnames";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { emptyTile, pieces } from "./assets.ts";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
@@ -31,25 +31,60 @@ function makeFlatBoard(state: BoardState, side: Side): [ SidedPiece | null, Loca
   return flatBoard;
 }
 
+function sameLoc(a: Location | null, b: Location | null): boolean {
+  if (a === null || b === null) {
+    return a === b;
+  }
+  return a[0] === b[0] && a[1] === b[1];
+}
+
 export default function Board({ side, state, requestMove }: Props) {
   const [ activePiece, setActivePiece ] = useState<null | Location>(null);
   const [ validMoves, setValidMoves ] = useState<Location[]>([]);
+  const [ dragging, setDragging ] = useState(false);
+  const [ fullClick, setFullClick ] = useState(false);
+  const [ ghostPos, setGhostPos ] = useState([ 0, 0 ]);
+  const [ mouseOverTile, setMouseOverTile ] = useState<Location>([ 0, 0 ]);
 
-  const tileSelectHandler = (tileLoc: Location) => () => {
+  useEffect(() => {
+    const mouseUpListener = () => setTimeout(() => setDragging(false));
+    document.addEventListener("mouseup", mouseUpListener);
+
+    return () => {
+      document.removeEventListener("mouseup", mouseUpListener);
+    };
+  }, []);
+
+  useEffect(() => {
+    const mouseMoveListener = (e: any) => {
+      if (e.buttons !== 1) {
+        return;
+      }
+
+      if (activePiece && sameLoc(activePiece, mouseOverTile) && !dragging) {
+        setDragging(true);
+      }
+
+      if (activePiece) {
+        setGhostPos([ e.x, e.y ]);
+      }
+    };
+    document.addEventListener("mousemove", mouseMoveListener);
+
+    return () => {
+      document.removeEventListener("mousemove", mouseMoveListener);
+    };
+  }, [ activePiece, dragging, mouseOverTile ]);
+
+
+  const tileMouseDown = (tileLoc: Location) => () => {
     const piece = state[tileLoc[1]][tileLoc[0]];
+
     if (activePiece) {
       if (requestMove(activePiece, tileLoc)) {
-        console.log("move success");
         setActivePiece(null);
         setValidMoves([]);
-        return;
-      } else console.log("move fail");
-
-      if (piece === null ||
-            sidedPieceToSide(piece) !== side ||
-            (activePiece[0] === tileLoc[0] && activePiece[1] === activePiece[1])) {
-        setActivePiece(null);
-        setValidMoves([]);
+        setFullClick(true);
         return;
       }
     }
@@ -58,9 +93,32 @@ export default function Board({ side, state, requestMove }: Props) {
       return;
     }
 
+    if (sameLoc(activePiece, tileLoc)) {
+      return;
+    }
+
     setActivePiece(tileLoc);
     setValidMoves(getValidMoves(state, tileLoc));
+    setFullClick(false);
   };
+  const tileMouseUp = (tileLoc: Location) => () => {
+    if (!dragging) {
+      if (sameLoc(activePiece, tileLoc)) {
+        if (!fullClick) {
+          setFullClick(true);
+          return;
+        }
+      }
+    } else {
+      if (activePiece) {
+        requestMove(activePiece, tileLoc);
+      }
+    }
+    setActivePiece(null);
+    setValidMoves([]);
+    setFullClick(true);
+  };
+
 
   return <div>
     <div className={style.board}>
@@ -71,18 +129,28 @@ export default function Board({ side, state, requestMove }: Props) {
                         title={locationToAlgebraic(loc)}
                         className={classNames({
                           [style.dark]: (loc[0] + loc[1]) % 2 !== 0,
-                          [style.active]: activePiece !== null && (activePiece[0] === loc[0] && activePiece[1] === loc[1]),
-                          [style.validMove]: validMoves.some(([ mx, my ]) => mx === loc[0] && my === loc[1]),
+                          [style.active]: sameLoc(activePiece, loc),
+                          [style.validMove]: validMoves.some((move) => sameLoc(loc, move)),
+                          [style.drop]: dragging && sameLoc(mouseOverTile, loc) && validMoves.some((move) => sameLoc(loc, move)),
+                          [style.drag]: sameLoc(activePiece, loc) && dragging,
                         })}
-                        onMouseDown={tileSelectHandler(loc)}
-                        onDragStart={() => console.log(1)}
-                        draggable={true}
+                        onMouseDown={tileMouseDown(loc)}
+                        onMouseUp={tileMouseUp(loc)}
+                        onMouseEnter={() => setMouseOverTile(loc)}
+                        draggable={false}
                   >
                     <img
                           src={p !== null ? pieces[p] : emptyTile}
                           alt={p !== null ? sidedPieceToNotationMap[p] : "empty"}
                           draggable={false} />
                   </div>)}
+      {(activePiece && dragging) ? <img
+            className={style.ghost}
+            src={pieces[state[activePiece[1]][activePiece[0]]!]}
+            alt={sidedPieceToNotationMap[state[activePiece[1]][activePiece[0]]!]}
+            style={{ left: ghostPos[0], top: ghostPos[1] }}
+            draggable={false}
+      /> : null}
     </div>
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
   </div>;
