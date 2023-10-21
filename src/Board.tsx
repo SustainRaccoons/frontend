@@ -1,5 +1,6 @@
 import classNames from "classnames";
 import { useState } from "react";
+import { emptyTile, pieces } from "./assets.ts";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
 import { getValidMoves } from "./boardUtils.ts";
@@ -59,17 +60,19 @@ export default function Board({ side, state, requestMove }: Props) {
     <div className={style.board}>
       {makeFlatBoard(state, side)
             .map(([ p, loc ]) =>
-                        <div
-                              key={locationToAlgebraic(loc)}
-                              title={locationToAlgebraic(loc)}
-                              className={classNames({
-                                [style.dark]: (loc[0] + loc[1]) % 2 !== 0,
-                                [style.active]: activePiece !== null && (activePiece[0] === loc[0] && activePiece[1] === loc[1]),
-                                [style.validMove]: validMoves.some(([ mx, my ]) => mx === loc[0] && my === loc[1]),
-                              })}
-                              onClick={tileSelectHandler(loc)}>
-                          {p !== null ? sidedPieceToNotationMap[p] : null}
-                        </div>)}
+                  <div
+                        key={locationToAlgebraic(loc)}
+                        title={locationToAlgebraic(loc)}
+                        className={classNames({
+                          [style.dark]: (loc[0] + loc[1]) % 2 !== 0,
+                          [style.active]: activePiece !== null && (activePiece[0] === loc[0] && activePiece[1] === loc[1]),
+                          [style.validMove]: validMoves.some(([ mx, my ]) => mx === loc[0] && my === loc[1]),
+                        })}
+                        onClick={tileSelectHandler(loc)}>
+                    <img
+                          src={p !== null ? pieces[p] : emptyTile}
+                          alt={p !== null ? sidedPieceToNotationMap[p] : "empty"} />
+                  </div>)}
     </div>
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
   </div>;

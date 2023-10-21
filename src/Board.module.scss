@@ -5,7 +5,7 @@
   image-rendering: pixelated;
 
   & > div {
-    background: #ddd;
+    background: #AEAEAE;
     line-height: 64px;
     text-align: center;
     font-family: sans-serif;
@@ -13,9 +13,16 @@
     user-select: none;
     position: relative;
     z-index: 1;
+    width: 100%;
+    height: 100%;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
 
     &.dark {
-      background: #666;
+      background: #5B5B5B;
     }
 
     &.active {
@@ -31,6 +38,7 @@
       text-align: center;
       font-size: 128px;
       color: rgba(184, 184, 184, 0.67);
+      z-index: 2;
     }
   }
 }
