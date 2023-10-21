@@ -49,7 +49,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
   let isEatingDisorder: number | boolean = isEDInEffect(state, currentMentalIllnesses);
 
-  let depressionPoints: number | boolean = spacesSubtractedByDepression(currentMentalIllnesses);
+  let depressionPoints: number = spacesSubtractedByDepression(currentMentalIllnesses);
 
 
   switch (chosenPiece) {
@@ -138,7 +138,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      if ((index == 0 || index == 2 || index == 4 || index == 6) && enPassantPossible !== null && isSchizo !== 0) {
+      if ((index == 0 || index == 2 || index == 4 || index == 6) && enPassantPossible !== null && isEatingDisorder !== 0) {
 
         if (enPassantPossible[0] == PawnSpecificDirectionalMovement[0] && enPassantPossible[1] == PawnSpecificDirectionalMovement[1]) {
           allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
@@ -154,6 +154,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
       if (targetSidedPiece !== null) {
         targetSide = sidedPieceToSide(targetSidedPiece);
+
+        if (isEatingDisorder === 0) {
+          continue;
+        }
 
         if (targetSide == Side.White && (index == 0 || index == 2)) {
           allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
@@ -236,7 +240,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           }
         } else {
           targetSide = sidedPieceToSide(targetSidedPiece);
-          if (chosenSide !== targetSide) {
+          if (chosenSide !== targetSide && isEatingDisorder !== 0) {
             allowedMoves.push([KnightSpecificDirectionalMovement[0], KnightSpecificDirectionalMovement[1]]);
           }
         }
@@ -305,7 +309,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           } else {
             targetSide = sidedPieceToSide(targetSidedPiece);
             canMoveRook[index] = false;
-            if (chosenSide !== targetSide) {
+            if (chosenSide !== targetSide && isEatingDisorder !== 0) {
               allowedMoves.push([RookSpecificDirectionalMovement[0], RookSpecificDirectionalMovement[1]]);
             }
           }
@@ -374,7 +378,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           } else {
             targetSide = sidedPieceToSide(targetSidedPiece);
             canMoveBishop[index] = false;
-            if (chosenSide !== targetSide) {
+            if (chosenSide !== targetSide && isEatingDisorder !== 0) {
               allowedMoves.push([BishopSpecificDirectionalMovement[0], BishopSpecificDirectionalMovement[1]]);
             }
           }
@@ -460,7 +464,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         } else {
           targetSide = sidedPieceToSide(targetSidedPiece);
           canMoveQueen[index] = false;
-          if (chosenSide !== targetSide) {
+          if (chosenSide !== targetSide && isEatingDisorder !== 0) {
             allowedMoves.push([QueenSpecificDirectionalMovement[0], QueenSpecificDirectionalMovement[1]]);
           }
         }
