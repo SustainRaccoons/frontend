@@ -1,4 +1,4 @@
-import { ExtendedBoardState, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
+import { ExtendedBoardState, invertSide, Location, Piece, Side, SidedPiece, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
 
 export function getValidMoves(state: ExtendedBoardState, location: Location): Location[] {
   const board = state.board;
@@ -651,6 +651,14 @@ export function getBoardStateAfterMove(state: ExtendedBoardState, from: Location
       state.castling.blackKingSide = false;
     }
   }
+
+
+  if (piece !== null && sidedPieceToSide(piece) === Side.Black) {
+    state.fullMoves += 1;
+  }
+
+  state.active = invertSide(state.active);
+
 
   return state;
 }

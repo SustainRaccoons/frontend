@@ -30,7 +30,7 @@ export function encodeBoardState(state: ExtendedBoardState): string {
 
   const enPassant = state.enPassant === null ? "-" : locationToAlgebraic(state.enPassant);
 
-  return `${placement} ${active} ${castling} ${enPassant} ${state.halfMoveClock} ${state.fullMoveClock}`;
+  return `${placement} ${active} ${castling} ${enPassant} ${state.halfMoveClock} ${state.fullMoves}`;
 }
 
 export function decodeBoardState(state: string): ExtendedBoardState {
@@ -60,6 +60,6 @@ export function decodeBoardState(state: string): ExtendedBoardState {
     },
     enPassant: enPassant === "-" ? null : algebraicToLocation(enPassant),
     halfMoveClock: Number(halfMoveClock),
-    fullMoveClock: Number(fullMoveClock),
+    fullMoves: Number(fullMoveClock),
   };
 }

@@ -46,7 +46,7 @@ export interface ExtendedBoardState {
   };
   enPassant: null | Location;
   halfMoveClock: number,
-  fullMoveClock: number,
+  fullMoves: number,
 }
 
 export type Location = [ number, number ];

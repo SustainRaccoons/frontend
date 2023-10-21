@@ -60,7 +60,7 @@ export function makeDefaultExtendedBoardState(): ExtendedBoardState {
       blackQueenSide: true,
     },
     enPassant: null,
-    fullMoveClock: 1,
+    fullMoves: 1,
     halfMoveClock: 0,
   };
 }
