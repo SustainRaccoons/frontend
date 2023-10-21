@@ -94,8 +94,17 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
 
         }
 
-        if (enPassantPossible !== null && specificTargetLocation[0] != enPassantPossible[0]) {
+        if (enPassantPossible !== null && specificTargetLocation[0] !== enPassantPossible[0]) {
           continue;
+        }
+
+        if (enPassantPossible !== null) {
+          if (chosenSide === Side.White && location[1] !== 3) {
+            continue;
+          }
+          if (chosenSide === Side.Black && location[1] !== 4) {
+            continue;
+          }
         }
 
 
