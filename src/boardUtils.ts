@@ -475,8 +475,8 @@ export function getValidMoves(state: ExtendedBoardState, location: Location): Lo
         
       }
 
-      console.log("Castling:", state.castling.whiteQueenSide);
-      console.log(location[0], location[1]);
+      // console.log("Castling:", state.castling.whiteQueenSide);
+      // console.log(location[0], location[1]);
 
       if (chosenSide === Side.White) {
         if (state.castling.whiteKingSide === true && state.board[7][6] === null && state.board[7][5] === null) {
@@ -564,4 +564,93 @@ export function isInCheck(state: ExtendedBoardState, side: Side): boolean {
   }
 
   return false;
+}
+
+export function getBoardStateAfterMove(state: ExtendedBoardState, from: Location, to: Location) {
+  state = structuredClone(state);
+
+  const piece = state.board[from[1]][from[0]];
+  const destination = state.board[to[1]][to[0]];
+
+  state.board[from[1]][from[0]] = null;
+  state.board[to[1]][to[0]] = piece;
+
+  // en passant
+  if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn) {
+    const direction = from[1] - to[1];
+    const didTake = from[1] != to[1];
+
+    if (didTake && destination === null) {
+      state.board[to[1] + direction][to[0]] = null;
+    }
+  }
+
+  // castling
+  if (piece !== null && sidedPieceToPiece(piece) === Piece.King && Math.abs(from[0] - to[0]) > 1) {
+    const direction = from[0] - to[0];
+    if (direction > 0) { // queen side
+      const rook = state.board[to[1]][0];
+      state.board[to[1]][0] = null;
+      state.board[to[1]][3] = rook;
+    }
+    if (direction < 0) { // king side
+      const rook = state.board[to[1]][7];
+      state.board[to[1]][7] = null;
+      state.board[to[1]][5] = rook;
+    }
+  }
+
+
+  // promoting
+  if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn) {
+    const side = sidedPieceToSide(piece);
+    if (side === Side.White && to[1] === 0) {
+      state.board[to[1]][to[0]] = SidedPiece.WhiteQueen;
+    }
+    if (side === Side.Black && to[1] === 7) {
+      state.board[to[1]][to[0]] = SidedPiece.BlackQueen;
+    }
+  }
+
+
+  // en passant availability
+  if (piece !== null && sidedPieceToPiece(piece) === Piece.Pawn && Math.abs(from[1] - to[1]) === 2) {
+    state.enPassant = [ from[0], (from[1] + to[1]) / 2 ];
+  } else {
+    state.enPassant = null;
+  }
+
+  // castling availability
+  if (piece !== null && sidedPieceToPiece(piece) === Piece.Rook) {
+    const side = sidedPieceToSide(piece);
+    if (from[0] === 0) {
+      if (side === Side.White && from[1] === 7) {
+        state.castling.whiteQueenSide = false;
+      }
+      if (side === Side.Black && from[1] === 0) {
+        state.castling.blackQueenSide = false;
+      }
+    }
+    if (from[0] === 7) {
+      if (side === Side.White && from[1] === 7) {
+        state.castling.whiteKingSide = false;
+      }
+      if (side === Side.Black && from[1] === 0) {
+        state.castling.blackKingSide = false;
+      }
+    }
+  }
+  if (piece !== null && sidedPieceToPiece(piece) === Piece.King) {
+    const side = sidedPieceToSide(piece);
+    if (side === Side.White) {
+      state.castling.whiteQueenSide = false;
+      state.castling.whiteKingSide = false;
+    }
+    if (side === Side.Black) {
+      state.castling.blackQueenSide = false;
+      state.castling.blackKingSide = false;
+    }
+  }
+
+  return state;
 }
