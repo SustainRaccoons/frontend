@@ -142,6 +142,8 @@ export default function Board({ side, state, requestMove }: Props) {
                         onMouseEnter={() => setMouseOverTile(loc)}
                         draggable={false}
                   >
+                    {loc[0] === 7 ? <span className={style.rowName}>{8 - loc[1]}</span> : null}
+                    {loc[1] === 7 ? <span className={style.colName}>{"ABCDEFGH"[loc[0]]}</span> : null}
                     <img
                           src={p !== null ? pieces[p] : emptyTile}
                           alt={p !== null ? sidedPieceToNotationMap[p] : "empty"}
