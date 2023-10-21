@@ -142,7 +142,7 @@ export default function App() {
               <h2 id="basic-concept">Basic concept</h2>
               <p>Each piece you loose gives your king a mental illness point which translates to gameplay penalties that represent the rapid decline of the kings mental state. Taking pieces takes away your mental illness points and there for removes the penalties.</p>
               <p>Every piece represents a separete mental illness and gives its own affect, these affects will be listed below. With each lost piece the affect doubles and is eliminated if you have an equal or higher amount of that piece.</p>
-              <h2 id="affects-of-loosing-each-piece">Affects of loosing each piece</h2>
+            <h2 id="effects-of-loosing-each-piece">Effects of loosing each piece</h2>
               <h3 id="the-queen">The Queen</h3>
               <p>If your king looses the queen he develops &quot;Crippling self doubt&quot; which makes him heavily doubt every move he makes, there for every move takes two turns.</p>
               <h3 id="the-pawn">The Pawn</h3>
