@@ -35,6 +35,20 @@ export enum SidedPiece {
 
 export type BoardState = (SidedPiece | null)[][];
 
+export interface ExtendedBoardState {
+  board: BoardState;
+  active: Side;
+  castling: {
+    whiteKingSide: boolean,
+    whiteQueenSide: boolean,
+    blackKingSide: boolean,
+    blackQueenSide: boolean,
+  };
+  enPassant: null | Location;
+  halfMoveClock: number,
+  fullMoveClock: number,
+}
+
 export type Location = [ number, number ];
 
 export const sidedPieceToNotationMap: Record<SidedPiece, string> = {

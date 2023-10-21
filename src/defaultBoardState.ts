@@ -1,4 +1,4 @@
-import { BoardState, SidedPiece } from "./types.ts";
+import { BoardState, ExtendedBoardState, Side, SidedPiece } from "./types.ts";
 
 export default function makeDefaultBoard(): BoardState {
   return [
@@ -47,4 +47,20 @@ export default function makeDefaultBoard(): BoardState {
       SidedPiece.WhiteRook,
     ],
   ];
+}
+
+export function makeDefaultExtendedBoardState(): ExtendedBoardState {
+  return {
+    board: makeDefaultBoard(),
+    active: Side.White,
+    castling: {
+      whiteKingSide: true,
+      whiteQueenSide: true,
+      blackKingSide: true,
+      blackQueenSide: true,
+    },
+    enPassant: null,
+    fullMoveClock: 1,
+    halfMoveClock: 0,
+  };
 }
