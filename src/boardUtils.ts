@@ -9,7 +9,7 @@ export function fullPieceMoves(piece: Piece, location: Location): Location[] {
       // moving up and down
       allowedMoves.push([location[0] - 1, location[1]]);
       allowedMoves.push([location[0] + 1, location[1]]);
-      
+
       allowedMoves.push([location[0] - 1, location[1] + 1]);
       allowedMoves.push([location[0] + 1, location[1] + 1]);
 
@@ -21,6 +21,8 @@ export function fullPieceMoves(piece: Piece, location: Location): Location[] {
     case Piece.Rook:
 
     for (let index = 0; index < 8; index++) {
+
+      if ()
       allowedMoves.push([location[0] + index, location[1]]);;
       
     }
