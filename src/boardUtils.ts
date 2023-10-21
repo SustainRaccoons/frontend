@@ -131,7 +131,7 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
         
         }
 
-        if (location[0] + move <= 0 && canMoveRightRook == true) {
+        if (location[0] + move <= 7 && canMoveRightRook == true) {
 
           targetSidedPiece = board[location[1]][location[0] + move];
 
@@ -202,111 +202,230 @@ export function getValidMoves(board: BoardState, location: Location): Location[]
 
     case Piece.Bishop:
 
-    let canMoveUpRightBishop: boolean = true;
-    let canMoveDownRightBishop: boolean = true 
-    let canMoveDownLeftBishop: boolean = true;
-    let canMoveUpLeftBishop: boolean = true;
+      let canMoveUpRightBishop: boolean = true;
+      let canMoveDownRightBishop: boolean = true 
+      let canMoveDownLeftBishop: boolean = true;
+      let canMoveUpLeftBishop: boolean = true;
 
-    for (let move = 1; move <= 8; move++) {
+      for (let move = 1; move <= 8; move++) {
 
-      
-      if (location[1] + move <= 7 && location[0] - move >= 0 && canMoveUpRightBishop == true ) {
+        
+        if (location[1] + move <= 7 && location[0] - move >= 0 && canMoveUpRightBishop == true ) {
 
-        targetSidedPiece = board[location[1] + move][location[0] - move];
+          targetSidedPiece = board[location[1] + move][location[0] - move];
 
-        if (targetSidedPiece === null) {
-          allowedMoves.push([location[0] - move, location[1] + move]);
-        } else {
-          canMoveUpRightBishop = false;
-          targetSide = sidedPieceToSide(targetSidedPiece);
-          if (chosenSide !== targetSide) {
+          if (targetSidedPiece === null) {
             allowedMoves.push([location[0] - move, location[1] + move]);
+          } else {
+            canMoveUpRightBishop = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] - move, location[1] + move]);
+            }
           }
+        
         }
-      
-      }
-      
-      if (location[1] + move <= 7 && location[0] + move <= 7 && canMoveDownRightBishop == true) {
+        
+        if (location[1] + move <= 7 && location[0] + move <= 7 && canMoveDownRightBishop == true) {
 
-        targetSidedPiece = board[location[1] + move][location[0] + move];
+          targetSidedPiece = board[location[1] + move][location[0] + move];
 
-        if (targetSidedPiece === null) {
-          allowedMoves.push([location[0] + move, location[1] + move]);
-        } else {
-          canMoveDownRightBishop = false
-          targetSide = sidedPieceToSide(targetSidedPiece);
-          if (chosenSide !== targetSide) {
+          if (targetSidedPiece === null) {
             allowedMoves.push([location[0] + move, location[1] + move]);
+          } else {
+            canMoveDownRightBishop = false
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] + move, location[1] + move]);
+            }
           }
+        
         }
-      
-      }
-      
-      if (location[0] + move <= 7 && location[1] - move >= 0 && canMoveDownLeftBishop == true) {
+        
+        if (location[0] + move <= 7 && location[1] - move >= 0 && canMoveDownLeftBishop == true) {
 
-        targetSidedPiece = board[location[1] - move][location[0] + move];
+          targetSidedPiece = board[location[1] - move][location[0] + move];
 
-        if (targetSidedPiece === null) {
-          allowedMoves.push([location[0] + move, location[1] - move]);
-        } else {
-          canMoveDownLeftBishop = false;
-          targetSide = sidedPieceToSide(targetSidedPiece);
-          if (chosenSide !== targetSide) {
+          if (targetSidedPiece === null) {
             allowedMoves.push([location[0] + move, location[1] - move]);
+          } else {
+            canMoveDownLeftBishop = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] + move, location[1] - move]);
+            }
           }
+        
         }
-      
-      }
 
-      if (location[0] - move >= 0 && location[1] - move >= 0 && canMoveUpLeftBishop == true) {
+        if (location[0] - move >= 0 && location[1] - move >= 0 && canMoveUpLeftBishop == true) {
 
-        targetSidedPiece = board[location[1] - move][location[0] - move];
+          targetSidedPiece = board[location[1] - move][location[0] - move];
 
-        if (targetSidedPiece === null) {
-          allowedMoves.push([location[0] - move, location[1] - move]);
-        } else {
-          canMoveUpLeftBishop = false;
-          targetSide = sidedPieceToSide(targetSidedPiece);
-          if (chosenSide !== targetSide) {
+          if (targetSidedPiece === null) {
             allowedMoves.push([location[0] - move, location[1] - move]);
+          } else {
+            canMoveUpLeftBishop = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] - move, location[1] - move]);
+            }
           }
+        
+        
         }
-      
-      
+
+          
       }
 
-        
-    }
-      /*
-      for (let index = 1; index <= 8; index++) {
-
-        allowedMoves.push([location[0] + index, location[1] + index]);
-
-        allowedMoves.push([location[0] - index, location[1] - index]);
-
-        allowedMoves.push([location[0] + index, location[1] - index]);
-
-        allowedMoves.push([location[0] - index, location[1] + index]);
-        
-      }*/
-      
       break;
 
+    
+    ////////////////////////////////// QUEEN ///////////////////////////////////
     case Piece.Queen:
 
-      for (let index = 1; index <= 8; index++) {
+      let canMoveUpRightQueen: boolean = true;
+      let canMoveDownRightQueen: boolean = true 
+      let canMoveDownLeftQueen: boolean = true;
+      let canMoveUpLeftQueen: boolean = true;
+      let canMoveDownQueen: boolean = true;
+      let canMoveUpQueen: boolean = true 
+      let canMoveLeftQueen: boolean = true;
+      let canMoveRightQueen: boolean = true;
 
-        // Diagonals
-        allowedMoves.push([location[0] + index, location[1] + index]);
-        allowedMoves.push([location[0] - index, location[1] - index]);
-        allowedMoves.push([location[0] + index, location[1] - index]);
-        allowedMoves.push([location[0] - index, location[1] + index]);
-        // Straight lines
-        allowedMoves.push([location[0] + index, location[1]]);;
-        allowedMoves.push([location[0] - index, location[1]]);;
-        allowedMoves.push([location[0], location[1] + index]);;
-        allowedMoves.push([location[0], location[1] - index]);;
+      for (let move = 1; move <= 8; move++) {
+
+        if (location[1] + move <= 7 && canMoveDownQueen == true ) {
+
+          targetSidedPiece = board[location[1] + move][location[0]];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0], location[1] + move]);
+          } else {
+            canMoveDownQueen = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0], location[1] + move]);
+            }
+          }
         
+        }
+
+        if (location[1] - move >= 0 && canMoveUpQueen == true) {
+
+          targetSidedPiece = board[location[1] - move][location[0]];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0], location[1] - move]);
+          } else {
+            canMoveUpQueen = false
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0], location[1] - move]);
+            }
+          }
+        
+        }
+
+        if (location[0] + move <= 7 && canMoveRightQueen == true) {
+
+          targetSidedPiece = board[location[1]][location[0] + move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] + move, location[1]]);
+          } else {
+            canMoveRightQueen = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] + move, location[1]]);
+            }
+          }
+        
+        }
+
+        if (location[0] - move >= 0 && canMoveLeftQueen == true) {
+
+          targetSidedPiece = board[location[1]][location[0] - move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] - move, location[1]]);
+          } else {
+            canMoveLeftQueen = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] - move, location[1]]);
+            }
+          }
+        
+        
+        }
+
+        
+        if (location[1] + move <= 7 && location[0] - move >= 0 && canMoveUpRightQueen == true ) {
+
+          targetSidedPiece = board[location[1] + move][location[0] - move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] - move, location[1] + move]);
+          } else {
+            canMoveUpRightQueen = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] - move, location[1] + move]);
+            }
+          }
+        
+        }
+        
+        if (location[1] + move <= 7 && location[0] + move <= 7 && canMoveDownRightQueen== true) {
+
+          targetSidedPiece = board[location[1] + move][location[0] + move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] + move, location[1] + move]);
+          } else {
+            canMoveDownRightQueen = false
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] + move, location[1] + move]);
+            }
+          }
+        
+        }
+        
+        if (location[0] + move <= 7 && location[1] - move >= 0 && canMoveDownLeftQueen == true) {
+
+          targetSidedPiece = board[location[1] - move][location[0] + move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] + move, location[1] - move]);
+          } else {
+            canMoveDownLeftQueen = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] + move, location[1] - move]);
+            }
+          }
+        
+        }
+
+        if (location[0] - move >= 0 && location[1] - move >= 0 && canMoveUpLeftQueen == true) {
+
+          targetSidedPiece = board[location[1] - move][location[0] - move];
+
+          if (targetSidedPiece === null) {
+            allowedMoves.push([location[0] - move, location[1] - move]);
+          } else {
+            canMoveUpLeftQueen = false;
+            targetSide = sidedPieceToSide(targetSidedPiece);
+            if (chosenSide !== targetSide) {
+              allowedMoves.push([location[0] - move, location[1] - move]);
+            }
+          }
+        
+        
+        }
+
       }
 
       break;
