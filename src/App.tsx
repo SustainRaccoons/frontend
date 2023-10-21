@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react";
 import useWebSocket, { ReadyState } from "react-use-websocket";
+import style from "./App.module.scss";
 import { decodeBoardState, encodeBoardState } from "./boardState.ts";
 import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
 import Game from "./Game.tsx";
-<<<<<<< HEAD
 import { ExtendedBoardState, Side } from "./types.ts";
-=======
-import { BoardState, Side } from "./types.ts";
-import style from "./App.module.scss"
->>>>>>> 9d6de77 (Started work on styling)
 
 export default function App() {
   const [ joinValue, setJoinValue ] = useState("");
