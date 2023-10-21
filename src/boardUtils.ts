@@ -498,3 +498,38 @@ export function isValidMove(board: BoardState, from: Location, to: Location): bo
     
   return false;
 }
+
+export function isInCheck(board: BoardState, side: Side): boolean {
+  let kingPos: Location = [ 0, 0 ];
+  const opponentPositions: Location[] = [];
+
+  for (let y = 0; y < 8; y++) {
+    for (let x = 0; x < 8; x++) {
+      const piece = board[y][x];
+
+      if (piece === null) {
+        continue;
+      }
+
+      const pieceSide = sidedPieceToSide(piece);
+
+      if (pieceSide === side) {
+        if (sidedPieceToPiece(piece) === Piece.King) {
+          kingPos = [ x, y ];
+        }
+      } else {
+        opponentPositions.push([ x, y ]);
+      }
+    }
+  }
+
+  for (const position of opponentPositions) {
+    for (let move of getValidMoves(board, position)) {
+      if (move[0] === kingPos[0] && move[1] === kingPos[1]) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}

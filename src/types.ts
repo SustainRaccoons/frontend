@@ -88,3 +88,14 @@ export function sidedPieceToPiece(piece: SidedPiece): Piece {
 export function sidedPieceToSide(piece: SidedPiece): Side {
   return piece >> 3;
 }
+
+export function sidedPieceFromDetails(side: Side, piece: Piece): SidedPiece {
+  return side << 3 | piece;
+}
+
+export function invertSide(side: Side): Side {
+  if (side === Side.White) {
+    return Side.Black;
+  }
+  return Side.White;
+}

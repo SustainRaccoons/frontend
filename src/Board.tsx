@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { emptyTile, pieces } from "./assets.ts";
 import style from "./Board.module.scss";
 import { locationToAlgebraic } from "./boardState.ts";
-import { getValidMoves } from "./boardUtils.ts";
-import { BoardState, Location, Side, SidedPiece, sidedPieceToNotationMap, sidedPieceToSide } from "./types.ts";
+import { getValidMoves, isInCheck } from "./boardUtils.ts";
+import { BoardState, invertSide, Location, Piece, Side, SidedPiece, sidedPieceFromDetails, sidedPieceToNotationMap, sidedPieceToSide } from "./types.ts";
 
 interface Props {
   side: Side;
@@ -45,6 +45,7 @@ export default function Board({ side, state, requestMove }: Props) {
   const [ fullClick, setFullClick ] = useState(false);
   const [ ghostPos, setGhostPos ] = useState([ 0, 0 ]);
   const [ mouseOverTile, setMouseOverTile ] = useState<Location>([ 0, 0 ]);
+
 
   useEffect(() => {
     const mouseUpListener = () => setTimeout(() => setDragging(false));
@@ -133,6 +134,8 @@ export default function Board({ side, state, requestMove }: Props) {
                           [style.validMove]: validMoves.some((move) => sameLoc(loc, move)),
                           [style.drop]: dragging && sameLoc(mouseOverTile, loc) && validMoves.some((move) => sameLoc(loc, move)),
                           [style.drag]: sameLoc(activePiece, loc) && dragging,
+                          [style.check]: (isInCheck(state, side) && p === sidedPieceFromDetails(side, Piece.King)) ||
+                          (isInCheck(state, invertSide(side)) && p === sidedPieceFromDetails(invertSide(side), Piece.King)),
                         })}
                         onMouseDown={tileMouseDown(loc)}
                         onMouseUp={tileMouseUp(loc)}

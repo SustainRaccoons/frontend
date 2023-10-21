@@ -48,6 +48,10 @@
     &.drop {
       filter: sepia(100%);
     }
+
+    &.check {
+      background: red;
+    }
   }
 
   img.ghost {
