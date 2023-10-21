@@ -62,6 +62,18 @@ export default function Game({ side, boardState, setBoardState }: Props) {
       }, 1000);
     }
 
+    if (boardState.active !== side) {
+      const selfDoubt = movesSkippedByCripplingSelfDoubt(mentalIllnessList(boardState.board, side !== Side.White));
+
+      if (selfDoubt !== false) {
+        console.log("!", side, boardState.fullMoves, selfDoubt, boardState.fullMoves % selfDoubt);
+        if ((boardState.fullMoves % selfDoubt) !== 0) {
+          console.log("?");
+          document.dispatchEvent(new Event("chess:skip"));
+        }
+      }
+    }
+
     let isOver = isGameOver(boardState);
     if (isOver === GameOver.Draw && isSchizophreniaIfEffect(boardState, mentalIllnessList(boardState.board, side !== Side.White)) === 0) {
       isOver = GameOver.No;

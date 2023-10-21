@@ -1,12 +1,4 @@
-import {
-  BoardState,
-  ExtendedBoardState,
-  MentalIllnessList,
-  Piece,
-  Side,
-  sidedPieceToPiece,
-  sidedPieceToSide
-} from "./types.ts";
+import { BoardState, ExtendedBoardState, MentalIllnessList, Piece, Side, sidedPieceToPiece, sidedPieceToSide } from "./types.ts";
 
 export const mentalIllnessList = (board: BoardState, isWhite: boolean): MentalIllnessList => {
   const mentalIllnessList: MentalIllnessList = {
@@ -105,7 +97,7 @@ export const isEDInEffect = (extendedBoard: ExtendedBoardState, mentalIllnessLis
 }
 
 export const movesSkippedByCripplingSelfDoubt = (mentalIllnessList: MentalIllnessList): number | false => {
-  return mentalIllnessList.cripplingSelfDoubt > 0 ? 2**(mentalIllnessList.cripplingSelfDoubt - 1) : false
+  return mentalIllnessList.cripplingSelfDoubt > 0 ? 2 ** (mentalIllnessList.cripplingSelfDoubt) : false;
 }
 
 export const spacesSubtractedByDepression = (mentalIllnessList: MentalIllnessList): number  => {
