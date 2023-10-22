@@ -64,7 +64,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
     let enPassantPossible: null | Location = state.enPassant;
 
-    let fieldAbovePawnWhenMovingDouble: null | SidedPiece;
+    let fieldAbovePawnWhenMovingDouble: null | SidedPiece = null;
 
     for (let index = 0; index < 8; index++) {
 
@@ -133,11 +133,9 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      if (PawnSpecificDirectionalMovement[1] - 1 < 0) {
-        continue;
+      if (PawnSpecificDirectionalMovement[1] - 1 > 0 && index == 3) {
+        fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] - 1][PawnSpecificDirectionalMovement[0]];
       }
-
-      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] - 1][PawnSpecificDirectionalMovement[0]];
 
       if (index == 3 && location[1] !== 1) {
         continue;
@@ -151,11 +149,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      if (PawnSpecificDirectionalMovement[1] + 1 > 7) {
-        continue;
+      if (PawnSpecificDirectionalMovement[1] + 1 > 7 && index == 7) {
+        fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] + 1][PawnSpecificDirectionalMovement[0]];
       }
       
-      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] + 1][PawnSpecificDirectionalMovement[0]];
 
       if (index == 7 && fieldAbovePawnWhenMovingDouble !== null) {
         continue;
