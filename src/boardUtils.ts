@@ -230,7 +230,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [KnightSpecificDirectionalMovement[0], KnightSpecificDirectionalMovement[1]]);
 
           if (isInCheck(futureBoard, chosenSide)) {
-            break;
+            continue;
           }
         }
 
