@@ -36,6 +36,7 @@ export default function App() {
         ...state,
         active: invertSide(state.active),
         lastMoveTime: Date.now(),
+        fullMoves: state.active === Side.Black ? state.fullMoves + 1 : state.fullMoves,
       }));
       document.dispatchEvent(new CustomEvent("chess:move", { detail: "-" }));
     };
