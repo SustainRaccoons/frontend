@@ -131,7 +131,7 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     {mentalIllnesses.anxiety > 0 && illnessPoints("Anxiety", mentalIllnesses.anxiety, `${maxTimePerMoveFromAnxiety(mentalIllnesses)} seconds`)}
     {mentalIllnesses.depression > 0 && illnessPoints("Depression", mentalIllnesses.depression, `${spacesSubtractedByDepression(mentalIllnesses)} spaces`)}
 
-    <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
-    <button onClick={() => document.dispatchEvent(new Event("chess:skip"))}>Toggle move</button>
+    {/*<button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>*/}
+    {/*<button onClick={() => document.dispatchEvent(new Event("chess:skip"))}>Toggle move</button>*/}
   </div>;
 }
