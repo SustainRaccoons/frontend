@@ -5,7 +5,7 @@ export const FrontPage = () => {
   const [ruleset, setRuleset] = useState(false)
   return (
       <div>
-        <h1>Welcome to Mentally ill chess</h1>
+        <h1>Welcome to Mental Chess</h1>
         <p>This is a chess game with a modified ruleset meant to raise awareness about mental illnesses and their affects</p>
         <div className={style.playButtons}>
           <button onClick={() => setRuleset(true)}>Read ruleset</button>

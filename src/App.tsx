@@ -141,7 +141,7 @@ export default function App() {
 
   return <div className={style.App}>
     <div>
-      <h1>Welcome to Mentally ill chess</h1>
+      <h1>Welcome to Mental Chess</h1>
       <p>This is a chess game with a modified ruleset meant to raise awareness about mental illnesses and their affects</p>
       <div className={style.playButtons}>
         <button onClick={() => setRuleset(true)}>Read ruleset</button>
@@ -172,7 +172,7 @@ export default function App() {
       {ruleset &&
           <div className={style.ruleset}>
               <button onClick={() => setRuleset(false)}>X</button>
-              <h1 id="rules-set-for-mentally-ill-chess">Rules set for mentally ill chess</h1>
+              <h1 id="rules-set-for-mentally-ill-chess">Rules set for Mental Chess</h1>
               <p>You can view the basic chess ruleset <a href="https://en.wikipedia.org/wiki/Rules_of_chess">here</a>.</p>
               <h2 id="basic-concept">Basic concept</h2>
               <p>Each piece you loose gives your king a mental illness point which translates to gameplay penalties that represent the rapid decline of the kings mental state. Taking pieces takes away your mental illness points and there for removes the penalties.</p>
