@@ -108,7 +108,20 @@ export default function Game({ side, boardState, setBoardState }: Props) {
       {gameOver === GameOver.WhiteWin ? "White Won" : null}
       {gameOver === GameOver.BlackWin ? "Black Won" : null}
     </h1> : null}
-    <h2>Current move: {boardState.active === Side.White ? "white" : "black"}</h2>
+    <div className={style.topBar}>
+      <h2><span style={{background: boardState.active === Side.White ? "#ffffff" : "#000000"}}></span> Current move: {boardState.active === Side.White ? "white" : "black"}</h2>
+      {mentalIllnesses.anxiety > 0 && boardState.active === side && <p style={{position: "relative"}}><span style={{
+        width: `${((60 / (2**mentalIllnesses.anxiety))/100) * timerTime}%`,
+        background: "#AEAEAE",
+        height: "100%",
+        position: "absolute",
+        left: "0",
+        top: "0",
+        zIndex: "-1"
+      }}></span>Time to move: {timerTime.toString(10).padStart(2, "0")}s</p>}
+      {mentalIllnesses.schizophrenia > 0 && boardState.active === side && isSchizophreniaIfEffect(boardState, mentalIllnesses) === 0 && <p>You are forced to take</p>}
+      {mentalIllnesses.eatingDisorder > 0 && boardState.active === side && isEDInEffect(boardState, mentalIllnesses) === 0 && <p>You cannot take on this move</p>}
+    </div>
 
     <Board side={side} state={boardState} requestMove={handleMoveRequest} locked={gameOver !== GameOver.No} />
 
@@ -119,12 +132,6 @@ export default function Game({ side, boardState, setBoardState }: Props) {
     {mentalIllnesses.depression > 0 && illnessPoints("Depression", mentalIllnesses.depression, `${spacesSubtractedByDepression(mentalIllnesses)} spaces`)}
 
     <button onClick={() => document.dispatchEvent(new Event("chess:swap"))}>Swap sides</button>
-
-    <span>Current move: {boardState.active === Side.White ? "white" : "black"}</span>
     <button onClick={() => document.dispatchEvent(new Event("chess:skip"))}>Toggle move</button>
-
-    {timerValue !== false ? <div>
-      0:{timerTime.toString(10).padStart(2, "0")}
-    </div> : null}
   </div>;
 }

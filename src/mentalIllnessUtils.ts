@@ -93,7 +93,7 @@ export const isSchizophreniaIfEffect = (extendedBoard: ExtendedBoardState, menta
 }
 
 export const isEDInEffect = (extendedBoard: ExtendedBoardState, mentalIllnessList: MentalIllnessList): number | false => {
-  return mentalIllnessList.eatingDisorder > 0 ? extendedBoard.fullMoves % (2**mentalIllnessList.eatingDisorder) : false
+  return mentalIllnessList.eatingDisorder > 0 ? ((2**mentalIllnessList.eatingDisorder*2) - 1) - (extendedBoard.fullMoves % (2**mentalIllnessList.eatingDisorder*2)) : false
 }
 
 export const movesSkippedByCripplingSelfDoubt = (mentalIllnessList: MentalIllnessList): number | false => {
