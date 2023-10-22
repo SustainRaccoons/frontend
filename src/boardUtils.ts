@@ -133,7 +133,11 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] + 1][PawnSpecificDirectionalMovement[0]];
+      if (PawnSpecificDirectionalMovement[1] - 1 < 0) {
+        continue;
+      }
+
+      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] - 1][PawnSpecificDirectionalMovement[0]];
 
       if (index == 3 && location[1] !== 1) {
         continue;
@@ -147,15 +151,27 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] - 1][PawnSpecificDirectionalMovement[0]];
+      if (PawnSpecificDirectionalMovement[1] + 1 > 7) {
+        continue;
+      }
+      
+      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] + 1][PawnSpecificDirectionalMovement[0]];
 
-      if (index == 3 && fieldAbovePawnWhenMovingDouble !== null) {
+      if (index == 7 && fieldAbovePawnWhenMovingDouble !== null) {
         continue;
       }
 
       if ((index == 0 || index == 2 || index == 4 || index == 6) && enPassantPossible !== null && isEatingDisorder !== 0) {
 
         if (enPassantPossible[0] == PawnSpecificDirectionalMovement[0] && enPassantPossible[1] == PawnSpecificDirectionalMovement[1]) {
+
+          if (chosenSide === Side.White && location[1] !== 3) {
+            continue;
+          } else if (chosenSide === Side.Black && location[1] !== 4) {
+            continue;
+          }
+
+
           allowedMoves.push([PawnSpecificDirectionalMovement[0], PawnSpecificDirectionalMovement[1]]);
           continue;
         }
