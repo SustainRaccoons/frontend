@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import style from "./App.module.scss";
 import Board from "./Board.tsx";
-import { getBoardStateAfterMove, isGameOver, isValidMove } from "./boardUtils.ts";
+import {getBoardStateAfterMove, isGameOver, isValidMove} from "./boardUtils.ts";
 import {
   isEDInEffect,
   isSchizophreniaIfEffect,
@@ -10,7 +10,7 @@ import {
   movesSkippedByCripplingSelfDoubt,
   spacesSubtractedByDepression,
 } from "./mentalIllnessUtils.ts";
-import { ExtendedBoardState, GameOver, Location, Side } from "./types.ts";
+import {ExtendedBoardState, GameOver, Location, Side} from "./types.ts";
 
 interface Props {
   side: Side;
@@ -48,6 +48,9 @@ export default function Game({ side, boardState, setBoardState }: Props) {
   };
 
   useEffect(() => {
+    const mentalIllnesses = mentalIllnessList(boardState.board, side === Side.White);
+    const timerValue = maxTimePerMoveFromAnxiety(mentalIllnesses);
+
     let timer: number | undefined;
     if (side === boardState.active && timerValue !== false) {
       const turnEndTime = Date.now() + timerValue * 1000;
@@ -66,9 +69,7 @@ export default function Game({ side, boardState, setBoardState }: Props) {
       const selfDoubt = movesSkippedByCripplingSelfDoubt(mentalIllnessList(boardState.board, side !== Side.White));
 
       if (selfDoubt !== false) {
-        console.log("!", side, boardState.fullMoves, selfDoubt, boardState.fullMoves % selfDoubt);
         if ((boardState.fullMoves % selfDoubt) !== 0) {
-          console.log("?");
           document.dispatchEvent(new Event("chess:skip"));
         }
       }
