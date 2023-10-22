@@ -57,12 +57,12 @@
     left: 1rem;
     width: calc(100vw - 2rem);
     height: calc(100vh - 2rem);
-    background: #ffffff;
+    background: #2b2b2b;
     border-radius: 1rem;
     //border: 1px solid #666666;
     padding: 1rem;
     overflow: auto;
-    box-shadow: 0 .5rem 5rem #666666;
+    box-shadow: 0 .5rem 5rem #000000;
 
     h1 {
       max-width: calc(100% - 3rem);
@@ -98,7 +98,7 @@
       aspect-ratio: 1/1;
       height: 2rem;
       width: 2rem;
-      background: #ffffff;
+      background: #2b2b2b;
     }
   }
 
