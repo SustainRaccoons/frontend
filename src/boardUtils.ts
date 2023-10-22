@@ -38,6 +38,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
   let targetSidedPiece : SidedPiece | null;
   let targetSide: Side;
   let targetLocations: Location[];
+  let willBeInCheck: boolean = false;
 
   let isWhite: boolean = false;
   if (chosenSide === Side.White) {
@@ -62,6 +63,8 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
     let PawnSpecificDirectionalMovement: Location;
 
     let enPassantPossible: null | Location = state.enPassant;
+
+    let fieldAbovePawnWhenMovingDouble: null | SidedPiece;
 
     for (let index = 0; index < 8; index++) {
 
@@ -130,11 +133,23 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
+      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] + 1][PawnSpecificDirectionalMovement[0]];
+
       if (index == 3 && location[1] !== 1) {
         continue;
       }
 
+      if (index == 3 && fieldAbovePawnWhenMovingDouble === null) {
+        continue;
+      }
+
       if (index == 7 && location[1] !== 6) {
+        continue;
+      }
+
+      fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] - 1][PawnSpecificDirectionalMovement[0]];
+
+      if (index == 3 && fieldAbovePawnWhenMovingDouble === null) {
         continue;
       }
 
@@ -298,7 +313,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
             futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [RookSpecificDirectionalMovement[0], RookSpecificDirectionalMovement[1]]);
   
             if (isInCheck(futureBoard, chosenSide)) {
-              break;
+              if (targetSidedPiece !== null) {
+                canMoveRook[index] = false;
+              }
+              continue;
             }
           }
   
@@ -367,7 +385,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
             futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [BishopSpecificDirectionalMovement[0], BishopSpecificDirectionalMovement[1]]);
   
             if (isInCheck(futureBoard, chosenSide)) {
-              break;
+              if (targetSidedPiece !== null) {
+                canMoveBishop[index] = false;
+              }
+              continue;
             }
           }
   
@@ -453,7 +474,10 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
           futureBoard = getBoardStateAfterMove(state, [location[0], location[1]], [QueenSpecificDirectionalMovement[0], QueenSpecificDirectionalMovement[1]]);
 
           if (isInCheck(futureBoard, chosenSide)) {
-            break;
+            if (targetSidedPiece !== null) {
+              canMoveQueen[index] = false;
+            }
+            continue;
           }
         }
 
