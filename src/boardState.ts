@@ -1,4 +1,4 @@
-import { ExtendedBoardState, Location, notationToSidedPieceMap, Side, sidedPieceToNotationMap } from "./types.ts";
+import {ExtendedBoardState, Location, notationToSidedPieceMap, Side, sidedPieceToNotationMap} from "./types.ts";
 
 export function locationToAlgebraic(loc: Location): string {
   return `${"abcdefgh"[loc[0]]}${8 - loc[1]}`;
@@ -30,7 +30,7 @@ export function encodeBoardState(state: ExtendedBoardState): string {
 
   const enPassant = state.enPassant === null ? "-" : locationToAlgebraic(state.enPassant);
 
-  return `${placement} ${active} ${castling} ${enPassant} ${state.halfMoveClock} ${state.fullMoves}`;
+  return `${placement} ${active} ${castling} ${enPassant} ${state.halfMoveClock} ${state.fullMoves} ${state.lastMoveTime}`;
 }
 
 export function decodeBoardState(state: string): ExtendedBoardState {
