@@ -526,7 +526,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         if (specificTargetLocation[0] >= 0 && specificTargetLocation[0] <= 7 && specificTargetLocation[1] >= 0 && specificTargetLocation[1] <= 7) {
           targetSidedPiece = board[specificTargetLocation[1]][specificTargetLocation[0]];
 
-          if (targetSidedPiece !== null) {
+          if (targetSidedPiece !== null && isEatingDisorder !== 0) {
             targetSide = sidedPieceToSide(targetSidedPiece);
 
             if (chosenSide === targetSide) {
