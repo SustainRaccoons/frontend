@@ -32,7 +32,11 @@ export default function App() {
     document.addEventListener("chess:swap", chessSwapSide);
 
     const chessDebugSwapMove = () => {
-      setBoardState(state => ({ ...state, active: invertSide(state.active) }));
+      setBoardState(state => ({
+        ...state,
+        active: invertSide(state.active),
+        lastMoveTime: Date.now(),
+      }));
       document.dispatchEvent(new CustomEvent("chess:move", { detail: "-" }));
     };
     document.addEventListener("chess:skip", chessDebugSwapMove);
