@@ -139,7 +139,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
         continue;
       }
 
-      if (index == 3 && fieldAbovePawnWhenMovingDouble === null) {
+      if (index == 3 && fieldAbovePawnWhenMovingDouble !== null) {
         continue;
       }
 
@@ -149,7 +149,7 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
 
       fieldAbovePawnWhenMovingDouble = board[PawnSpecificDirectionalMovement[1] - 1][PawnSpecificDirectionalMovement[0]];
 
-      if (index == 3 && fieldAbovePawnWhenMovingDouble === null) {
+      if (index == 3 && fieldAbovePawnWhenMovingDouble !== null) {
         continue;
       }
 
