@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import useWebSocket, { ReadyState } from "react-use-websocket";
+import {useEffect, useState} from "react";
+import useWebSocket, {ReadyState} from "react-use-websocket";
 import style from "./App.module.scss";
-import { decodeBoardState, encodeBoardState } from "./boardState.ts";
-import { makeDefaultExtendedBoardState } from "./defaultBoardState.ts";
-import { FrontPage } from "./FrontPage.tsx";
+import {decodeBoardState, encodeBoardState} from "./boardState.ts";
+import {makeDefaultExtendedBoardState} from "./defaultBoardState.ts";
+import {FrontPage} from "./FrontPage.tsx";
 import Game from "./Game.tsx";
 import "./main.scss";
 import {ExtendedBoardState, invertSide, Side, SidedPiece} from "./types.ts";
@@ -15,7 +15,6 @@ export default function App() {
   const [ playingSide, setPlayingSide ] = useState(Math.random() > .5 ? Side.White : Side.Black);
   const [ hostId, setHostId ] = useState("");
   const [ boardState, setBoardState ] = useState<ExtendedBoardState>(makeDefaultExtendedBoardState());
-  const [ lastBoardUpdate, setLastBoardUpdate ] = useState(0);
   const [ruleset, setRuleset] = useState(false)
   const [ joinFail, setJoinFail ] = useState(false);
   const [ moveHistory, setMoveHistory ] = useState<string[]>([]);
@@ -23,7 +22,10 @@ export default function App() {
   const { sendMessage, lastMessage, readyState } = useWebSocket("ws://nav.lv:8081");
 
   useEffect(() => {
-    const chessEndEvent = () => setGameActive(false);
+    const chessEndEvent = () => {
+      setGameActive(false);
+      setBoardState(makeDefaultExtendedBoardState());
+    }
     document.addEventListener("chess:end", chessEndEvent);
 
     const chessSwapSide = () => setPlayingSide(side => side === Side.White ? Side.Black : Side.White);
@@ -35,7 +37,9 @@ export default function App() {
     };
     document.addEventListener("chess:skip", chessDebugSwapMove);
 
-    const chessMove = (e: Event) => setMoveHistory(mh => [ ...mh, (e as CustomEvent).detail ]);
+    const chessMove = (e: Event) => {
+      sendMessage(`move:${(e as CustomEvent).detail}`);
+    }
     document.addEventListener("chess:move", chessMove);
 
     return () => {
@@ -75,8 +79,10 @@ export default function App() {
         return;
       }
 
-      setBoardState(decodeBoardState(state));
-      setLastBoardUpdate(Date.now());
+      const newState = decodeBoardState(state);
+      if (newState.lastMoveTime > boardState.lastMoveTime) {
+        setBoardState(newState);
+      }
     }
 
     if (msg.startsWith("side:")) {
@@ -88,6 +94,11 @@ export default function App() {
       }
     }
 
+    if (msg.startsWith("moves:")) {
+      const moves = msg.substring(6);
+      setMoveHistory(moves.split(" "));
+    }
+
     if (msg === "close") {
       document.dispatchEvent(new Event("chess:end"));
     }
@@ -96,9 +107,7 @@ export default function App() {
   }, [ lastMessage ]);
 
   useEffect(() => {
-    if (Date.now() > lastBoardUpdate + 10) {
-      sendMessage(`state:${encodeBoardState(boardState)}`);
-    }
+    sendMessage(`state:${encodeBoardState(boardState)}`);
   }, [ boardState ]);
 
   if (gameActive) {

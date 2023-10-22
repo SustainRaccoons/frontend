@@ -41,6 +41,7 @@ export function decodeBoardState(state: string): ExtendedBoardState {
     enPassant,
     halfMoveClock,
     fullMoveClock,
+    lastMoveTime,
   ] = state.split(" ");
 
 
@@ -61,5 +62,6 @@ export function decodeBoardState(state: string): ExtendedBoardState {
     enPassant: enPassant === "-" ? null : algebraicToLocation(enPassant),
     halfMoveClock: Number(halfMoveClock),
     fullMoves: Number(fullMoveClock),
+    lastMoveTime: Number(lastMoveTime),
   };
 }

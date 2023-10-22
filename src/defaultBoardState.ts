@@ -1,4 +1,4 @@
-import { BoardState, ExtendedBoardState, Side, SidedPiece } from "./types.ts";
+import {BoardState, ExtendedBoardState, Side, SidedPiece} from "./types.ts";
 
 export default function makeDefaultBoard(): BoardState {
   return [
@@ -62,5 +62,6 @@ export function makeDefaultExtendedBoardState(): ExtendedBoardState {
     enPassant: null,
     fullMoves: 1,
     halfMoveClock: 0,
+    lastMoveTime: 0,
   };
 }

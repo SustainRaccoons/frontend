@@ -1,4 +1,4 @@
-import { locationToAlgebraic } from "./boardState.ts";
+import {locationToAlgebraic} from "./boardState.ts";
 import {
   ExtendedBoardState,
   ExtraExtendedBoardState,
@@ -14,9 +14,9 @@ import {
   sidedPieceToSymbolMap,
 } from "./types.ts";
 import {
-  mentalIllnessList,
-  isSchizophreniaIfEffect,
   isEDInEffect,
+  isSchizophreniaIfEffect,
+  mentalIllnessList,
   spacesSubtractedByDepression
 } from "./mentalIllnessUtils.ts";
 
@@ -790,6 +790,7 @@ export function getBoardStateAfterMove(startState: ExtendedBoardState, from: Loc
 
   state.active = invertSide(state.active);
 
+  state.lastMoveTime = Date.now();
 
   return state;
 }
