@@ -667,6 +667,8 @@ export function getBoardStateAfterMove(startState: ExtendedBoardState, from: Loc
   const pieceSide = sidedPieceToSide(piece);
   const pieceType = sidedPieceToPiece(piece);
 
+  const takenPiece = state.board[to[1]][to[0]];
+
 
   let disambiguation = "";
   if (pieceType !== Piece.Pawn) {
@@ -778,6 +780,24 @@ export function getBoardStateAfterMove(startState: ExtendedBoardState, from: Loc
         state.castling.whiteKingSide = false;
       }
       if (pieceSide === Side.Black && from[1] === 0) {
+        state.castling.blackKingSide = false;
+      }
+    }
+  }
+  if (takenPiece !== null && sidedPieceToPiece(takenPiece) === Piece.Rook) {
+    if (to[0] === 0) {
+      if (pieceSide === Side.White && to[1] === 7) {
+        state.castling.whiteQueenSide = false;
+      }
+      if (pieceSide === Side.Black && to[1] === 0) {
+        state.castling.blackQueenSide = false;
+      }
+    }
+    if (to[0] === 7) {
+      if (pieceSide === Side.White && to[1] === 7) {
+        state.castling.whiteKingSide = false;
+      }
+      if (pieceSide === Side.Black && to[1] === 0) {
         state.castling.blackKingSide = false;
       }
     }
