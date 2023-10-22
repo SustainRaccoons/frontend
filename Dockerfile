@@ -1,4 +1,4 @@
-FROM node:alpine
+FROM node:20-alpine
 
 WORKDIR /app
 
@@ -6,4 +6,4 @@ COPY . .
 
 RUN yarn
 
-ENTRYPOINT ["yarn", "dev"]
+ENTRYPOINT ["yarn", "dev", "--host"]
