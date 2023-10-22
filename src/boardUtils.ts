@@ -543,6 +543,11 @@ export function getValidMoves(state: ExtendedBoardState, location: Location, isR
       }
 
       // Castling
+
+      if (isSchizo === 0) {
+        break;
+      }
+      
       if (chosenSide === Side.White) {
         if (state.castling.whiteKingSide === true && state.board[7][6] === null && state.board[7][5] === null) {
           allowedMoves.push([6, 7]);
